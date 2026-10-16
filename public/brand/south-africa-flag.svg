@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <title>South African flag</title>
+  <path fill="#de3831" d="M0 0h900v300H0z"/>
+  <path fill="#002395" d="M0 300h900v300H0z"/>
+  <path fill="#fff" d="M0 0l300 200h600v200H300L0 600z"/>
+  <path fill="#007a4d" d="M0 0l337.5 225H900v150H337.5L0 600z"/>
+  <path fill="#ffb612" d="M0 100l300 200L0 500z"/>
+  <path fill="#000" d="M0 160l210 140L0 440z"/>
+</svg>

@@ -643,3 +643,21 @@
     font-size: 12px;
   }
 }
+
+.reference-workspace.workspace .sidebar-origin {
+  padding: 18px 3px 0;
+  gap: 10px;
+  white-space: normal;
+  color: #d1e0e6;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: 0.02em;
+}
+.reference-workspace.workspace .sidebar-origin img {
+  display: block;
+  width: 36px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 1px;
+}

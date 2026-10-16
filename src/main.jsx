@@ -305,7 +305,13 @@ function App() {
               </a>
             )}
             <div className="sidebar-origin">
-              <span className="sa-flag" /> BUILT FOR SOUTH AFRICAN COLLECTORS
+              <img
+                src="/brand/south-africa-flag.svg"
+                alt="South African flag"
+                width="36"
+                height="24"
+              />
+              <span>Built for South African collectors</span>
             </div>
           </div>
         </aside>
