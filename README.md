@@ -1,6 +1,6 @@
 # 24CoinAtlas
 
-[Download the complete Hostinger deployment ZIP](downloads/24CoinAtlas-hostinger.zip?raw=true) · [Hostinger upload instructions](docs/HOSTINGER.md)
+[Download the Hostinger Node.js source ZIP](downloads/24CoinAtlas-node-source.zip?raw=true) · [Hostinger upload instructions](docs/HOSTINGER.md)
 
 A South African **collectible-coin** research and private collection application. It is not a cryptocurrency app. It covers registration, persistent coin records, secure photographs, acquisition costs, catalogue research, research lists, exports, gated analytics and integration boundaries for identification and subscriptions.
 

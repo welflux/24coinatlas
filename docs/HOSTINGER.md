@@ -13,7 +13,9 @@ If your managed Node.js plan does not meet these requirements, use a suitable VP
 
 ## Upload and application settings
 
-The ZIP has `package.json` at its root and includes source, lockfile, migrations, tests, deployment documentation and a freshly built `dist/`. It excludes `node_modules`, Git metadata, credentials, local databases, user photographs, backups and browser test artifacts. Dependencies must be installed on the host; native packages must not be copied from another operating system.
+Use **`24CoinAtlas-node-source.zip` for a Hostinger Node.js deployment**. It has `package.json` at its root and includes source, lockfile, migrations, tests and deployment documentation. It excludes build output (`dist/`), nested download archives, `node_modules`, Git metadata, credentials, local databases, user photographs, backups and browser test artifacts. Hostinger installs dependencies and builds the application. Native packages must not be copied from another operating system.
+
+The older `24CoinAtlas-hostinger.zip` additionally includes a local production build; use the source-only archive for the connector's Node.js deployment tool.
 
 1. Select a Node.js application deployment in hPanel **if available on your plan**, and upload/extract the ZIP with its package files at the application root. On a VPS, extract to your chosen release directory instead.
 2. Choose Node.js 24. Install with `npm ci` and build with `npm run build`. Build dependencies must be available during this step; do not omit development dependencies before building.
