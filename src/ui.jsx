@@ -72,11 +72,15 @@ export function useResource(path, dependency = 0) {
   }, [path, dependency, revision]);
   return { data, error, loading, reload: () => setRevision((r) => r + 1) };
 }
-export function Brand({ light = false }) {
+export function Brand({ light = false, inverse = false }) {
   return (
     <span className={`brand brand-logo ${light ? "brand-light" : ""}`}>
       <img
-        src="/brand/24coinatlas-logo.png"
+        src={
+          inverse
+            ? "/brand/24coinatlas-logo-inverse.png"
+            : "/brand/24coinatlas-logo.png"
+        }
         alt="24CoinAtlas"
         width="2172"
         height="724"

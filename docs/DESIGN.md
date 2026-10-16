@@ -1,12 +1,12 @@
 # Product design
 
-The landing page uses a midnight-blue, warm-ivory and brass palette with typographic specimen plates, catalogue-record and private-inventory previews, clear research standards, and native expandable FAQs. Illustrations are explicitly labelled; they do not represent reference photographs or authentication evidence.
+The landing page follows the user-supplied photographic reference: a dark navigation bar and full-width coin hero, three trust statements, three era cards, a dark research section, standards, expandable FAQs, a mountain-landscape call to action, and a two-row dark footer. The approved globe logo is retained in the header and footer, as explicitly requested when resolving the reference's older star logo.
 
-The primary action opens the public catalogue. Account creation is offered only when the capabilities endpoint confirms registration is available. AI and registration availability copy follows the same endpoint. Authentication, verification requirements and billing controls are unchanged.
+Serif headings, gold italics, section proportions and photographic compositions follow that reference. The original source fonts and separate image files were not supplied. The hero, coin still lifes and landscape are illustrative recreations prepared from the visual reference; they are not authenticated coin photographs or licensed catalogue reference records. `public/landing/` contains their WebP delivery versions. The original generated PNG masters remain outside the app checkout. Availability statements, accurate era ranges and catalogue review limitations are preserved. The primary action opens the public catalogue while registration is unavailable.
 
 ## Typography
 
-The preferred family is **Italian Plate No2 Expanded**. This is a commercial typeface. No licensed webfont files were supplied, so the repository does not distribute them or download an unauthorised copy. `src/landing.css` defines a local regular face and falls back to Helvetica Neue or Arial. Visitors without the installed typeface see the fallback.
+The preferred application family is **Italian Plate No2 Expanded**. The landing page uses Georgia-style serif headings and italic gold emphasis to follow the newer visual reference; the workspace retains its existing preferred sans-serif stack. This is a commercial typeface. No licensed webfont files were supplied, so the repository does not distribute them or download an unauthorised copy. `src/landing.css` defines a local regular face and falls back to Helvetica Neue or Arial. Visitors without the installed typeface see the fallback.
 
 To deliver the preferred face consistently, provide licensed WOFF2 files for regular, medium and semibold (or the licensed variable font), with permission for web embedding on the site's domain. Add the supplied files to `public/fonts/` and replace the local-only `@font-face` in `src/landing.css` with matching URL sources and actual weight ranges. Keep `font-display: swap`. Recheck wrapping and contrast at 320, 390, 768 and 1440 pixels after switching fonts; metrics differ from the system fallback.
 
@@ -22,6 +22,6 @@ Registration, sign-in, recovery, reset and verification share `AuthLayout`, a tw
 
 ## Approved logo
 
-The approved gold globe and gold/navy `24coinatlas` wordmark replaces the earlier star symbol. Canonical transparent PNG assets live in `public/brand/`; `Brand` in `src/ui.jsx` renders the wordmark across public pages, workspace navigation, loading/error screens and all account-access pages. `src/brand.css` controls responsive sizing. The dark sidebar places the original coloured wordmark on an ivory panel for legibility. The globe is used for the favicon, touch icon, sidebar note and account illustration.
+The approved gold globe and gold/navy `24coinatlas` wordmark replaces the earlier star symbol. Canonical transparent PNG assets live in `public/brand/`; a gold/ivory wordmark variant supports the dark landing-page header and footer; `Brand` in `src/ui.jsx` renders the wordmark across public pages, workspace navigation, loading/error screens and all account-access pages. `src/brand.css` controls responsive sizing. The dark sidebar places the original coloured wordmark on an ivory panel for legibility. The globe is used for the favicon, touch icon, sidebar note and account illustration.
 
 Verification/recovery email templates use the hosted logo with a text alternative. Downloaded HTML dossiers and collection reports embed the logo, so it remains visible offline. These are PNG assets, not editable vector artwork or font files. The source ZIP includes both images.

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   ArrowRight,
+  Camera,
   ArrowUpRight,
   ArrowLeft,
   ChevronRight,
@@ -42,399 +43,254 @@ export function Landing({ session, caps }) {
   const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     if (!menuOpen) return;
-    const closeOnEscape = (event) => {
+    const close = (event) => {
       if (event.key === "Escape") {
         setMenuOpen(false);
         document.querySelector(".atlas-menu")?.focus();
       }
     };
-    window.addEventListener("keydown", closeOnEscape);
-    return () => window.removeEventListener("keydown", closeOnEscape);
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
   }, [menuOpen]);
   const registrationReady =
     caps?.auth &&
     (!caps.auth.verification_required || caps.auth.email_available);
-  const accountPath = session
-    ? "/app"
-    : registrationReady
-      ? "/register"
-      : "/app/catalogue";
-  const accountLabel = session
-    ? "Open workspace"
-    : registrationReady
-      ? "Start your collection"
-      : "Explore the catalogue";
   return (
-    <div className="atlas-home">
-      <div className="atlas-announcement">
-        <span>BUILT FOR SOUTH AFRICAN COIN COLLECTORS</span>
-        <a href="#standards">
-          Our approach <ArrowUpRight size={13} />
-        </a>
-      </div>
-      <header className="atlas-nav atlas-wrap">
-        <a href="/" data-route aria-label="24CoinAtlas home">
-          <Brand />
-        </a>
-        <nav
-          className={menuOpen ? "atlas-nav-links is-open" : "atlas-nav-links"}
-          aria-label="Main navigation"
-          id="atlas-main-navigation"
-        >
-          <a href="/app/catalogue" data-route>
-            The catalogue
+    <div className="atlas-home reference-landing">
+      <header className="atlas-header">
+        <div className="atlas-nav atlas-wrap">
+          <a href="/" data-route aria-label="24CoinAtlas home">
+            <Brand inverse />
           </a>
-          <a href="#workflow" onClick={() => setMenuOpen(false)}>
-            How it works
-          </a>
-          <a href="#standards" onClick={() => setMenuOpen(false)}>
-            Our standards
-          </a>
-        </nav>
-        <div className="atlas-nav-actions">
-          <a
-            href={session ? "/app" : "/login"}
-            data-route
-            className="atlas-signin"
+          <nav
+            className={menuOpen ? "atlas-nav-links is-open" : "atlas-nav-links"}
+            id="atlas-main-navigation"
+            aria-label="Main navigation"
           >
-            {session ? "My workspace" : "Sign in"}
-          </a>
-          <a
-            href={accountPath}
-            data-route
-            className="atlas-button atlas-button-small"
-          >
-            {session ? "Workspace" : "Explore"} <ArrowUpRight size={16} />
-          </a>
-          <button
-            className="atlas-menu"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-            aria-controls="atlas-main-navigation"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            <span /> <span />
-          </button>
+            <a href="/app/catalogue" data-route>
+              The catalogue
+            </a>
+            <a href="#workflow" onClick={() => setMenuOpen(false)}>
+              How it works
+            </a>
+            <a href="#standards" onClick={() => setMenuOpen(false)}>
+              Our standards
+            </a>
+          </nav>
+          <div className="atlas-nav-actions">
+            <a
+              href={session ? "/app" : "/login"}
+              data-route
+              className="atlas-signin"
+            >
+              {session ? "My workspace" : "Sign in"}
+            </a>
+            <a
+              href="/app/catalogue"
+              data-route
+              className="atlas-button atlas-button-outline"
+            >
+              Explore <ArrowUpRight size={17} />
+            </a>
+            <button
+              className="atlas-menu"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+              aria-controls="atlas-main-navigation"
+              onClick={() => setMenuOpen(!menuOpen)}
+            >
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
       </header>
       <main id="main">
         <section className="atlas-hero">
-          <div className="atlas-wrap atlas-hero-grid">
-            <div className="atlas-hero-copy">
-              <div className="atlas-kicker">
-                <span /> SOUTH AFRICAN COIN INTELLIGENCE
-              </div>
-              <h1>
-                A collector’s eye.
-                <br />
-                <span>A clearer picture.</span>
-              </h1>
-              <p>
-                From your first Mandela R5 to a carefully kept Krugerrand.
-                Research the details, understand the evidence, and give every
-                coin a proper record.
-              </p>
-              <div className="atlas-hero-actions">
-                <a href="/app/catalogue" data-route className="atlas-button">
-                  Explore the catalogue <ArrowUpRight size={19} />
-                </a>
-                <a href="#workflow" className="atlas-link">
-                  See how it works <ArrowRight size={16} />
-                </a>
-              </div>
-              <div className="atlas-hero-note">
-                <BookOpen size={15} /> Open catalogue. No account needed.
-              </div>
-            </div>
-            <div
-              className="atlas-specimen"
-              aria-label="Illustrative catalogue record preview"
-            >
-              <div className="atlas-specimen-top">
-                <span>24 / ATLAS COLLECTION</span>
-                <span>
-                  RECORD PREVIEW <i />
-                </span>
-              </div>
-              <div className="atlas-specimen-art">
-                <div className="atlas-specimen-axis" />
-                <span className="atlas-plate-corner">
-                  ZA
-                  <br />
-                  2008
-                </span>
-                <svg
-                  viewBox="0 0 320 320"
-                  aria-hidden="true"
-                  className="atlas-medallion"
-                >
-                  <defs>
-                    <radialGradient id="atlas-metal">
-                      <stop stopColor="#f5e8c6" />
-                      <stop offset=".7" stopColor="#c7a76b" />
-                      <stop offset="1" stopColor="#97713c" />
-                    </radialGradient>
-                  </defs>
-                  <circle cx="160" cy="160" r="146" fill="url(#atlas-metal)" />
-                  {[138, 131, 118].map((r) => (
-                    <circle
-                      key={r}
-                      cx="160"
-                      cy="160"
-                      r={r}
-                      fill="none"
-                      stroke="#72582e"
-                      strokeWidth={r === 131 ? "1" : ".6"}
-                    />
-                  ))}
-                  <circle
-                    cx="160"
-                    cy="160"
-                    r="125"
-                    fill="none"
-                    stroke="#72582e"
-                    strokeWidth="3"
-                    strokeDasharray="1 5"
-                  />
-                  <path
-                    d="M160 55v210M55 160h210M86 86l148 148M86 234 234 86"
-                    stroke="#72582e"
-                    opacity=".18"
-                  />
-                  <text
-                    x="160"
-                    y="113"
-                    textAnchor="middle"
-                    fontSize="12"
-                    letterSpacing="5"
-                    fill="#5c4628"
-                  >
-                    SOUTH AFRICA
-                  </text>
-                  <text
-                    x="160"
-                    y="195"
-                    textAnchor="middle"
-                    fontSize="87"
-                    fontFamily="Arial, sans-serif"
-                    fontWeight="600"
-                    letterSpacing="-6"
-                    fill="#5c4628"
-                  >
-                    R5
-                  </text>
-                  <path d="M129 215h62" stroke="#72582e" />
-                  <text
-                    x="160"
-                    y="238"
-                    textAnchor="middle"
-                    fontSize="14"
-                    letterSpacing="5"
-                    fill="#5c4628"
-                  >
-                    2008
-                  </text>
-                </svg>
-                <span className="atlas-plate-scale">
-                  ILLUSTRATIVE PLATE
-                  <br />
-                  NOT A COIN PHOTOGRAPH
-                </span>
-                <div className="atlas-observation">
-                  <ScanLine size={17} />
-                  <span>
-                    Start with the detail.
-                    <br />
-                    <strong>Follow the evidence.</strong>
-                  </span>
-                </div>
-              </div>
-              <div className="atlas-specimen-info">
-                <div>
-                  <span className="atlas-micro">
-                    MODERN RAND / COMMEMORATIVE
-                  </span>
-                  <h2>Mandela R5</h2>
-                  <p>South Africa · 2008</p>
-                </div>
-                <span className="atlas-status">Reference review pending</span>
-              </div>
-              <a
-                href="/app/catalogue/sa-mandela-2008"
-                data-route
-                className="atlas-record-link"
-              >
-                Explore this catalogue record <ArrowUpRight size={17} />
+          <img
+            className="atlas-hero-background"
+            src="/landing/coin-atlas-hero.webp"
+            width="1888"
+            height="833"
+            alt=""
+            fetchPriority="high"
+            decoding="async"
+          />
+          <div className="atlas-wrap atlas-hero-content">
+            <div className="atlas-kicker">SOUTH AFRICAN COIN INTELLIGENCE</div>
+            <h1>
+              A collector’s eye.
+              <br />
+              <em>A clearer picture.</em>
+            </h1>
+            <p>
+              From your first Mandela R5 to a carefully kept Krugerrand.
+              <br className="atlas-desktop-break" /> Research the details,
+              understand the evidence, and give every coin a proper record.
+            </p>
+            <div className="atlas-hero-actions">
+              <a href="/app/catalogue" data-route className="atlas-button">
+                Explore the catalogue <ArrowUpRight size={18} />
+              </a>
+              <a href="#workflow" className="atlas-link">
+                See how it works <ArrowRight size={16} />
               </a>
             </div>
-          </div>
-          <div className="atlas-wrap atlas-hero-bottom">
-            <span>LOOK CLOSER. COLLECT WITH CONTEXT.</span>
-            <a href="#collection">
-              Discover the collection <span>↓</span>
-            </a>
-          </div>
-        </section>
-
-        <section
-          className="atlas-principles atlas-wrap"
-          aria-label="Product principles"
-        >
-          {[
-            [
-              BookOpen,
-              "Research before assumptions",
-              "Source links and visible review status.",
-            ],
-            [
-              LockKeyhole,
-              "Your collection stays yours",
-              "Private records and photographs.",
-            ],
-            [
-              ShieldCheck,
-              "Evidence before estimates",
-              "No invented prices or rarity claims.",
-            ],
-          ].map(([Icon, title, text]) => (
-            <div key={title}>
-              <Icon size={22} strokeWidth={1.5} />
-              <div>
-                <h2>{title}</h2>
-                <p>{text}</p>
-              </div>
+            <div className="atlas-hero-note">
+              <ShieldCheck size={17} />
+              Open catalogue. No account needed.
             </div>
-          ))}
+          </div>
         </section>
-
+        <section className="atlas-principles" aria-label="Product principles">
+          <div className="atlas-wrap">
+            {[
+              [
+                BookOpen,
+                "Research before assumptions",
+                "Source links and visible review status.",
+              ],
+              [
+                Camera,
+                "Your collection stays yours",
+                "Private records and photographs.",
+              ],
+              [
+                ShieldCheck,
+                "Evidence before estimates",
+                "No invented prices or rarity claims.",
+              ],
+            ].map(([Icon, title, text]) => (
+              <div key={title}>
+                <Icon size={34} strokeWidth={1.4} />
+                <div>
+                  <h2>{title}</h2>
+                  <p>{text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
         <section id="collection" className="atlas-collection atlas-wrap">
           <div className="atlas-section-head">
             <div>
-              <div className="atlas-kicker">
-                01 / THE SOUTH AFRICAN COLLECTION
-              </div>
+              <div className="atlas-kicker">THE SOUTH AFRICAN COLLECTION</div>
               <h2>
                 A country’s history.
                 <br />
-                Held in your hand.
+                <em>Held in your hand.</em>
               </h2>
-            </div>
-            <div>
               <p>
-                Explore the coinage that connects us. Begin with introductory
-                records across South Africa’s collecting eras.
+                Explore South Africa’s rich coin heritage,
+                <br className="atlas-desktop-break" /> from early coinage to
+                modern commemoratives.
+                <br className="atlas-desktop-break" /> Each coin tells a story —
+                and every detail matters.
+              </p>
+            </div>
+            <div className="atlas-collection-aside">
+              <p>
+                Explore the catalogue that connects us
+                <br className="atlas-desktop-break" /> to South Africa’s
+                collecting past.
               </p>
               <a href="/app/catalogue" data-route className="atlas-link">
-                Browse all records <ArrowUpRight size={17} />
+                Browse all records <ArrowRight size={17} />
               </a>
             </div>
           </div>
           <div className="atlas-era-grid">
             {[
               [
-                "01",
                 "1892—1902",
                 "ZAR & historical",
-                "The pond and the republic’s coinage.",
-                "1",
-                "POND",
+                "The Boer republic’s coinage.",
+                "historical",
                 "ZAR & historical",
               ],
               [
-                "02",
                 "1923—1960",
                 "Union & pre-decimal",
-                "Shillings, pennies and a different currency.",
-                "1",
-                "SHILLING",
+                "Transition, pioneers and a different currency.",
+                "springbok",
                 "Union & pre-decimal",
               ],
               [
-                "03",
                 "1961—TODAY",
                 "Rand & commemoratives",
-                "A decimal currency. An evolving identity.",
-                "5",
-                "RAND",
+                "A national currency, its events and stories.",
+                "rand",
                 "Modern rand",
               ],
-            ].map(([n, years, title, description, value, unit, era]) => (
+            ].map(([years, title, text, image, era]) => (
               <a
                 href={`/app/catalogue?era=${encodeURIComponent(era)}`}
                 data-route
                 className="atlas-era"
-                key={n}
+                key={title}
               >
-                <div className="atlas-era-top">
+                <div className="atlas-era-art">
                   <span>{years}</span>
                   <ArrowUpRight size={19} />
-                </div>
-                <div className="atlas-era-mark" aria-hidden="true">
-                  <span>{value}</span>
-                  <small>{unit}</small>
-                  <i />
+                  <img
+                    src={`/landing/${image}-coin.webp`}
+                    alt={`Illustrative ${image === "historical" ? "historical portrait" : image === "springbok" ? "springbok" : "five rand"} coin; not an identification reference`}
+                    width="1254"
+                    height="1254"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="atlas-era-caption">
-                  <span>{n} / EXPLORE THE ERA</span>
                   <h3>{title}</h3>
-                  <p>{description}</p>
+                  <p>{text}</p>
                 </div>
               </a>
             ))}
           </div>
-          <p className="atlas-collection-note">
-            An introductory catalogue, not a complete date or variety reference.
-            Records awaiting review are labelled.
+          <p className="atlas-imagery-note">
+            Illustrative coin imagery, not verified identification references.
+            Introductory catalogue records await source review.
           </p>
         </section>
-
         <section id="workflow" className="atlas-workflow">
           <div className="atlas-wrap">
-            <div className="atlas-section-head">
-              <div>
-                <div className="atlas-kicker">
-                  02 / A MORE CONSIDERED WAY TO COLLECT
-                </div>
-                <h2>
-                  Less guesswork.
-                  <br />
-                  More understanding.
-                </h2>
-              </div>
-              <p>
-                A useful collection starts with a good record. Bring the
-                photograph, the history and the questions together.
-              </p>
-            </div>
+            <div className="atlas-kicker">HOW TO RESEARCH A COIN</div>
+            <h2>
+              Less guesswork.
+              <br />
+              <em>More understanding.</em>
+            </h2>
             <div className="atlas-workflow-grid">
               <div className="atlas-ledger">
-                <div className="atlas-ledger-head">
-                  <Layers size={18} />
-                  <span>YOUR COLLECTION</span>
-                  <span>EXAMPLE RECORD</span>
+                <div className="atlas-ledger-coin">
+                  <img
+                    src="/landing/springbok-coin.webp"
+                    width="1254"
+                    height="1254"
+                    loading="lazy"
+                    alt="Illustrative springbok coin beside an example collection record"
+                  />
                 </div>
-                <div className="atlas-ledger-title">
-                  <span>01</span>
-                  <div>
-                    <h3>Every detail, in its place.</h3>
-                    <p>A private record for the coin and its story.</p>
+                <div className="atlas-ledger-information">
+                  <h3>Every detail, in its place.</h3>
+                  <p>A simple record for the coin and its story.</p>
+                  <dl>
+                    {[
+                      ["Identity", "Denomination, year & mint"],
+                      ["Condition", "Your assessment & photographs"],
+                      ["Provenance", "Where it came from"],
+                      ["Acquisition", "Date, quantity & purchase cost"],
+                    ].map(([term, definition]) => (
+                      <div key={term}>
+                        <dt>{term}</dt>
+                        <dd>{definition}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                  <div className="atlas-ledger-foot">
+                    <LockKeyhole size={14} />
+                    Collection tools require an account.
                   </div>
-                </div>
-                <dl>
-                  {[
-                    ["Identity", "Denomination, year & mint"],
-                    ["Condition", "Your observations & photographs"],
-                    ["Provenance", "Where it came from"],
-                    ["Acquisition", "Date, quantity & purchase cost"],
-                  ].map(([term, definition]) => (
-                    <div key={term}>
-                      <dt>{term}</dt>
-                      <dd>{definition}</dd>
-                    </div>
-                  ))}
-                </dl>
-                <div className="atlas-ledger-foot">
-                  <LockKeyhole size={14} /> Collection tools require an account.
                 </div>
               </div>
               <div className="atlas-steps">
@@ -442,17 +298,17 @@ export function Landing({ session, caps }) {
                   [
                     "01",
                     "Find your starting point",
-                    "Browse the catalogue by era and explore a coin’s historical context, specifications and linked sources.",
+                    "Browse the catalogue by era and type. Explore coin records, specifications and linked reference sources.",
                   ],
                   [
                     "02",
                     "Document what you see",
-                    "Keep photographs of both sides, condition notes and provenance together in your private collection.",
+                    "Keep a photo record of the coin, condition and provenance together in your private collection.",
                   ],
                   [
                     "03",
                     "Build on the evidence",
-                    "Separate an asking price from a completed sale. Treat an AI suggestion as a research lead, never a certificate.",
+                    "Research the details. Separate observations from assumptions, and asking prices from completed sales.",
                   ],
                 ].map(([n, title, text]) => (
                   <div key={n}>
@@ -467,11 +323,10 @@ export function Landing({ session, caps }) {
             </div>
           </div>
         </section>
-
         <section id="standards" className="atlas-standards atlas-wrap">
           <div>
             <div className="atlas-kicker">
-              03 / THE STANDARD WE HOLD OURSELVES TO
+              THE STANDARD WE HOLD OURSELVES TO
             </div>
             <h2>
               Trust is in
@@ -479,38 +334,43 @@ export function Landing({ session, caps }) {
               the details.
             </h2>
             <p>
-              Collecting deserves clarity. Here is what you can expect from
-              24CoinAtlas today.
+              Collecting deserves clarity. Here is what you can
+              <br className="atlas-desktop-break" /> expect from 24CoinAtlas
+              today.
             </p>
             <a href="/app/research" data-route className="atlas-link">
-              Explore our research approach <ArrowUpRight size={17} />
+              Explore our research approach <ArrowRight size={17} />
             </a>
           </div>
           <div className="atlas-standard-list">
             {[
               [
+                BookOpen,
                 "Clear about sources",
-                "Catalogue entries show their review status. Introductory records are still awaiting independent source verification.",
+                "Catalogue entries show where records come from. Introductory records are still awaiting independent source verification.",
               ],
               [
+                Gem,
                 "Honest about value",
-                "No verified sales dataset is connected yet. Unsupported valuations stay unavailable rather than becoming invented estimates.",
+                "No verified sales dataset is currently connected. Unsupported estimates stay unavailable rather than becoming invented prices.",
               ],
               [
+                ScanLine,
                 "Transparent about AI",
                 caps?.ai?.available
-                  ? "Optional photo analysis offers tentative observations, with consent. It does not authenticate, grade or guarantee a coin’s value."
-                  : "AI photo analysis is not connected yet. Catalogue research remains open; AI will never replace professional authentication.",
+                  ? "Optional AI observations are tentative, with consent. They do not replace professional authentication or grading."
+                  : "AI photo analysis is not connected yet. Catalogue research remains open; AI does not replace professional authentication.",
               ],
               [
+                Layers,
                 "Open about access",
                 registrationReady
-                  ? "Create a free account for private collection tools. Paid checkout remains disabled while commercial services are being prepared."
+                  ? "The catalogue is open to browse. Create a free account for private collection records; paid checkout remains disabled."
                   : "The catalogue is open to browse. New account registration is temporarily unavailable while verification-email delivery is being prepared.",
               ],
-            ].map(([title, text]) => (
+            ].map(([Icon, title, text]) => (
               <div key={title}>
-                <Check size={17} />
+                <Icon size={28} strokeWidth={1.4} />
                 <div>
                   <h3>{title}</h3>
                   <p>{text}</p>
@@ -519,7 +379,6 @@ export function Landing({ session, caps }) {
             ))}
           </div>
         </section>
-
         <section className="atlas-faq atlas-wrap">
           <div className="atlas-kicker">A FEW THINGS WORTH KNOWING</div>
           <h2>Before you begin.</h2>
@@ -540,54 +399,49 @@ export function Landing({ session, caps }) {
             <details key={q}>
               <summary>
                 {q}
-                <Plus size={19} />
+                <Plus size={18} />
               </summary>
               <p>{a}</p>
             </details>
           ))}
         </section>
-
         <section className="atlas-close">
           <div className="atlas-wrap">
             <div className="atlas-kicker">YOUR NEXT CHAPTER IN COLLECTING</div>
             <h2>
               Start with a coin.
               <br />
-              Discover its context.
+              <em>Discover its context.</em>
             </h2>
-            <a href={accountPath} data-route className="atlas-button">
-              {accountLabel} <ArrowUpRight size={19} />
+            <a href="/app/catalogue" data-route className="atlas-button">
+              Explore the catalogue <ArrowUpRight size={18} />
             </a>
-            <p>
-              {session
-                ? "Your private collection, all in one place."
-                : registrationReady
-                  ? "Free collection tools. No payment details required."
-                  : "Browse the public catalogue. No account needed."}
-            </p>
+            <p>Browse the public catalogue. No account required.</p>
           </div>
         </section>
       </main>
-      <footer className="atlas-footer atlas-wrap">
-        <div>
+      <footer className="atlas-footer">
+        <div className="atlas-wrap atlas-footer-top">
           <a href="/" data-route aria-label="24CoinAtlas home">
-            <Brand />
+            <Brand inverse />
           </a>
-          <p>A clearer view of South African coinage.</p>
+          <nav aria-label="Footer navigation">
+            <a href="/app/catalogue" data-route>
+              The catalogue
+            </a>
+            <a href="#workflow">How it works</a>
+            <a href="#standards">Our standards</a>
+          </nav>
+          <a href="#main" className="atlas-backtop">
+            Back to top <ArrowUpRight size={16} />
+          </a>
         </div>
-        <nav aria-label="Footer navigation">
-          <a href="/app/catalogue" data-route>
-            Catalogue
-          </a>
-          <a href="#standards">Our standards</a>
-          <a href={session ? "/app/settings" : "/login"} data-route>
-            {session ? "Account settings" : "Sign in"}
-          </a>
-        </nav>
-        <div className="atlas-footer-bottom">
-          <span>© {new Date().getFullYear()} 24CoinAtlas</span>
-          <span>Independent research platform · Not a grading service</span>
-          <a href="#main">Back to top ↑</a>
+        <div className="atlas-footer-rule">
+          <div className="atlas-wrap atlas-footer-bottom">
+            <span>© {new Date().getFullYear()} 24CoinAtlas</span>
+            <span>Independent research platform. Not a grading service.</span>
+            <a href="#main">Back to top ↑</a>
+          </div>
         </div>
       </footer>
     </div>
