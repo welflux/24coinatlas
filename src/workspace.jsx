@@ -50,117 +50,158 @@ export function Catalogue() {
     );
   return (
     <>
-      <Heading
-        eyebrow="THE SOUTH AFRICAN CATALOGUE"
-        title="History, in the palm of your hand."
-        description="Start with the identity, then follow the references."
-      />
-      <div className="catalogue-toolbar">
-        <div className="search-input">
-          <Search size={18} />
-          <input
-            aria-label="Search catalogue"
-            placeholder="Search a coin, denomination or era…"
-            value={query}
-            maxLength={100}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-          {query && (
-            <button aria-label="Clear search" onClick={() => setQuery("")}>
-              <X size={16} />
-            </button>
-          )}
+      <section
+        className="catalogue-reference-hero"
+        aria-labelledby="catalogue-title"
+      >
+        <div className="catalogue-reference-heading">
+          <div className="eyebrow">THE SOUTH AFRICAN CATALOGUE</div>
+          <h1 id="catalogue-title">
+            History, in the <em>palm</em>
+            <br />
+            of your <em>hand.</em>
+          </h1>
+          <p>Start with the identity, then follow the references.</p>
         </div>
-        <label className="filter-select">
-          <SlidersHorizontal size={16} />
-          <select
-            aria-label="Filter by era"
-            value={era}
-            onChange={(e) => setEra(e.target.value)}
-          >
-            <option>All eras</option>
-            {eras.map((e) => (
-              <option key={e}>{e}</option>
-            ))}
-          </select>
-        </label>
-      </div>
-      <Notice>
-        <strong>A carefully labelled starting point.</strong> Introductory
-        records link to official reference organisations and await source
-        verification. This is not a complete date, variety or mintage catalogue.
-      </Notice>
-      {r.loading ? (
-        <Loading />
-      ) : r.error ? (
-        <Notice tone="error">{r.error}</Notice>
-      ) : (
-        <>
-          <div className="results-caption">
-            {r.data.items.length} research entries{" "}
-            <span>NO VERIFIED VALUATIONS CONNECTED</span>
+        <div className="catalogue-toolbar">
+          <div className="search-input">
+            <Search size={18} />
+            <input
+              aria-label="Search catalogue"
+              placeholder="Search a coin, denomination or era…"
+              value={query}
+              maxLength={100}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button aria-label="Clear search" onClick={() => setQuery("")}>
+                <X size={16} />
+              </button>
+            )}
           </div>
-          <div className="catalogue-grid">
-            {r.data.items.map((c) => (
-              <a
-                href={`/app/catalogue/${c.id}`}
-                data-route
-                className="catalogue-card"
-                key={c.id}
-              >
-                <div className="catalogue-art">
-                  <CoinArt kind={c.image} />
-                  <span>ILLUSTRATION · NOT A REFERENCE PHOTO</span>
-                  <span className="art-denomination">{c.denomination}</span>
-                </div>
-                <div className="catalogue-card-copy">
-                  <div className="card-topline">
-                    <Tag>{c.era}</Tag>
-                    <ArrowUpRight size={18} />
-                  </div>
-                  <h2>{c.name}</h2>
-                  <p>
-                    {c.start_year}
-                    {c.end_year && c.end_year !== c.start_year
-                      ? ` – ${c.end_year}`
-                      : !c.end_year
-                        ? " onward"
-                        : ""}
-                    <span>
-                      {new Intl.DisplayNames(["en"], { type: "region" }).of(
-                        c.country_code || "ZA",
-                      )}
-                    </span>
-                  </p>
-                  <div className="catalogue-source">
-                    <BookOpen size={13} />
-                    Source verification pending
-                  </div>
-                </div>
-              </a>
-            ))}
-          </div>
-          {!r.data.items.length && (
-            <Empty
-              title="No entries match this search."
-              icon={Search}
-              action={
-                <Button
-                  variant="secondary"
-                  onClick={() => {
-                    setQuery("");
-                    setEra("All eras");
-                  }}
-                >
-                  Clear filters
-                </Button>
-              }
+          <label className="filter-select">
+            <SlidersHorizontal size={16} />
+            <select
+              aria-label="Filter by era"
+              value={era}
+              onChange={(e) => setEra(e.target.value)}
             >
-              Try a denomination or another era.
-            </Empty>
-          )}
-        </>
-      )}
+              <option>All eras</option>
+              {eras.map((e) => (
+                <option key={e}>{e}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+      </section>
+      <section
+        className="catalogue-reference-results"
+        aria-label="Catalogue records"
+      >
+        <Notice>
+          <strong>A carefully labelled starting point.</strong> Introductory
+          records link to official reference organisations and await source
+          verification. This is not a complete date, variety or mintage
+          catalogue.
+        </Notice>
+        {r.loading ? (
+          <Loading />
+        ) : r.error ? (
+          <Notice tone="error">{r.error}</Notice>
+        ) : (
+          <>
+            <div className="results-caption">
+              {r.data.items.length} research entries{" "}
+              <span>NO VERIFIED VALUATIONS CONNECTED</span>
+            </div>
+            <div className="catalogue-grid">
+              {r.data.items.map((c) => (
+                <a
+                  href={`/app/catalogue/${c.id}`}
+                  data-route
+                  className="catalogue-card"
+                  key={c.id}
+                >
+                  <div className="catalogue-art">
+                    <CoinArt kind={c.image} />
+                    <span>ILLUSTRATION · NOT A REFERENCE PHOTO</span>
+                    <span className="art-denomination">{c.denomination}</span>
+                  </div>
+                  <div className="catalogue-card-copy">
+                    <div className="card-topline">
+                      <Tag>{c.era}</Tag>
+                      <ArrowUpRight size={18} />
+                    </div>
+                    <h2>{c.name}</h2>
+                    <p>
+                      {c.start_year}
+                      {c.end_year && c.end_year !== c.start_year
+                        ? ` – ${c.end_year}`
+                        : !c.end_year
+                          ? " onward"
+                          : ""}
+                      <span>
+                        {new Intl.DisplayNames(["en"], { type: "region" }).of(
+                          c.country_code || "ZA",
+                        )}
+                      </span>
+                    </p>
+                    <div className="catalogue-source">
+                      <BookOpen size={13} />
+                      Source verification pending
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+            {!r.data.items.length && (
+              <Empty
+                title="No entries match this search."
+                icon={Search}
+                action={
+                  <Button
+                    variant="secondary"
+                    onClick={() => {
+                      setQuery("");
+                      setEra("All eras");
+                    }}
+                  >
+                    Clear filters
+                  </Button>
+                }
+              >
+                Try a denomination or another era.
+              </Empty>
+            )}
+          </>
+        )}
+      </section>
+      <section
+        className="catalogue-reference-trust"
+        aria-label="Our research approach"
+      >
+        <div>
+          <span className="trust-kicker">24CoinAtlas</span>
+          <h2>
+            Knowledge builds
+            <br />
+            <em>stronger collections.</em>
+          </h2>
+        </div>
+        <div className="catalogue-trust-copy">
+          <ShieldCheck size={23} />
+          <div>
+            <h3>Trusted reference. Real context.</h3>
+            <p>
+              Introductory records link to official sources, with identification
+              and historical context.
+            </p>
+          </div>
+        </div>
+        <a href="/app/catalogue" data-route>
+          Explore the catalogue <ArrowUpRight size={16} />
+        </a>
+      </section>
     </>
   );
 }

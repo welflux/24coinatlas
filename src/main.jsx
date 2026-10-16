@@ -38,6 +38,7 @@ import "./style.css";
 import "./landing.css";
 import "./workspace-brand.css";
 import "./brand.css";
+import "./catalogue-reference.css";
 function App() {
   const [location, setLocation] = useState(
       window.location.pathname + window.location.search,
@@ -222,13 +223,15 @@ function App() {
         />
       );
     screen = (
-      <div className="workspace">
+      <div
+        className={`workspace reference-workspace ${path === "/app/catalogue" ? "catalogue-workspace" : ""}`}
+      >
         <aside
           id="workspace-navigation"
           className={`sidebar ${mobile ? "open" : ""}`}
         >
           <a href="/" data-route>
-            <Brand light />
+            <Brand inverse />
           </a>
           <button
             className="mobile-close icon-button"
@@ -279,13 +282,13 @@ function App() {
             />
             <h4>Evidence before estimates.</h4>
             <p>Document the detail. Keep the context.</p>
-          </div>
-          <div className="sidebar-bottom">
             <a data-route href="/app/billing" className="pro-link">
               <Gem size={18} />
               <span>Explore Atlas Pro</span>
               <ArrowUpRight size={15} />
             </a>
+          </div>
+          <div className="sidebar-bottom">
             <a data-route href="/app/settings">
               <Settings size={18} />
               Account & settings
@@ -358,11 +361,31 @@ function App() {
           <main id="main" className="page-content" key={path}>
             {content}
           </main>
-          <div className="workspace-foot">
-            <span>24CoinAtlas · Knowledge before value.</span>
+        </div>
+        <footer className="research-workspace-footer">
+          <div className="research-footer-top">
+            <a href="/" data-route>
+              <Brand inverse />
+            </a>
+            <nav aria-label="Footer">
+              <a href="/app/catalogue" data-route>
+                The catalogue
+              </a>
+              <a href="/#workflow">How it works</a>
+              <a href="/#standards">Our standards</a>
+            </nav>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              Back to top ↑
+            </button>
+          </div>
+          <div className="research-footer-bottom">
+            <span>© {new Date().getFullYear()} 24CoinAtlas.</span>
+            <span>Independent research platform. Not a grading service.</span>
             <span>Educational guidance. Not a professional appraisal.</span>
           </div>
-        </div>
+        </footer>
       </div>
     );
   }

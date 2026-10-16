@@ -1,0 +1,603 @@
+/* Supplied catalogue reference: dark research workspace, ivory records, gold detail. */
+.reference-workspace.workspace {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  background: #031720;
+}
+.reference-workspace.workspace .sidebar {
+  position: relative;
+  inset: auto;
+  width: 220px;
+  padding: 15px 12px 24px;
+  border-right: 1px solid #ffffff24;
+  background:
+    radial-gradient(ellipse at 0 78%, #12333b50, transparent 45%), #02151e;
+  overflow: hidden;
+}
+.reference-workspace.workspace .sidebar::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  width: 250px;
+  height: 250px;
+  border: 1px solid #b99a5530;
+  border-radius: 50%;
+  bottom: 28px;
+  left: -43px;
+  background: url("/brand/24coinatlas-mark.png") center / 70% no-repeat;
+  opacity: 0.11;
+  box-shadow:
+    0 0 0 9px #b99a5512,
+    0 0 0 13px #b99a551c;
+}
+.reference-workspace.workspace .sidebar .brand.brand-logo {
+  width: 196px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+.reference-workspace.workspace .sidebar-section-label {
+  margin: 18px 13px 10px;
+  border-top: 1px solid #ffffff26;
+  padding-top: 19px;
+  font-size: 8px;
+  color: #d4dee1;
+}
+.reference-workspace.workspace .sidebar nav {
+  gap: 4px;
+}
+.reference-workspace.workspace .sidebar nav a {
+  min-height: 41px;
+  font-size: 11px;
+  color: #d8e1e5;
+  padding: 11px 13px;
+  border: 1px solid transparent;
+}
+.reference-workspace.workspace .sidebar nav a.active {
+  background: #c5b78c29;
+  border-color: #b5a16f10;
+  border-left: 3px solid #e9c879;
+  color: #f0d191;
+  padding-left: 11px;
+}
+.reference-workspace.workspace .sidebar-note {
+  margin: 29px 7px 10px;
+  padding: 15px 16px 10px;
+  border: 1px solid #73858b50;
+  border-radius: 6px;
+}
+.reference-workspace.workspace .sidebar-note h4 {
+  font:
+    15px/1.3 Georgia,
+    serif;
+  color: #fffdf5;
+  margin: 10px 0 6px;
+}
+.reference-workspace.workspace .sidebar-note p {
+  font-size: 9px;
+  line-height: 1.8;
+  color: #d0dce1;
+}
+.reference-workspace.workspace .sidebar-note .pro-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  margin: 20px -7px 0;
+  padding: 11px 9px;
+  border: 1px solid #bba77980;
+  border-radius: 3px;
+  color: #edcd8a;
+  font-size: 9px;
+}
+.reference-workspace.workspace .sidebar-bottom {
+  margin-top: 0;
+  position: relative;
+  z-index: 1;
+}
+.reference-workspace.workspace .sidebar-origin {
+  font-size: 5px;
+}
+.reference-workspace.workspace .workspace-main {
+  margin-left: 0;
+  background: #f8f8f6;
+}
+.reference-workspace.workspace .workspace-top {
+  height: 49px;
+  min-height: 49px;
+  padding-inline: 39px;
+  background: linear-gradient(110deg, #0b2028, #02141c);
+  border-color: #ffffff27;
+}
+.reference-workspace.workspace .breadcrumb,
+.reference-workspace.workspace .breadcrumb strong,
+.reference-workspace.workspace .live-label,
+.reference-workspace.workspace .sign-in-link {
+  color: #f2f2ec;
+}
+.reference-workspace.workspace .breadcrumb {
+  font-size: 10px;
+}
+.reference-workspace.workspace .live-label {
+  font-size: 7px;
+}
+.reference-workspace.workspace .live-label i {
+  background: #e5bd6e;
+}
+.reference-workspace.workspace .sign-in-link {
+  font-size: 10px;
+}
+.catalogue-workspace.workspace .page-content {
+  max-width: none;
+  padding: 0;
+}
+.catalogue-reference-hero {
+  min-height: 228px;
+  padding: 25px 39px 10px;
+  background:
+    linear-gradient(90deg, #00151dcc 0%, #00151d40 45%, transparent 75%),
+    url("/landing/coin-atlas-hero.webp") center 48% / cover;
+  color: #fffdf5;
+}
+.workspace .catalogue-reference-heading .eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: #edca85;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.catalogue-reference-heading .eyebrow::before {
+  content: "⟵";
+  font-size: 25px;
+  line-height: 12px;
+}
+.workspace .catalogue-reference-heading h1 {
+  font:
+    italic 40px/1.05 Georgia,
+    serif;
+  letter-spacing: -1.4px;
+  color: #fffdf5;
+  margin: 17px 0 10px;
+}
+.workspace .catalogue-reference-heading em {
+  color: #edc47e;
+  font-family: Georgia, serif;
+}
+.catalogue-reference-heading p {
+  font-size: 12px;
+  color: #fffdf5;
+}
+.workspace .catalogue-reference-hero .catalogue-toolbar {
+  margin: 23px 0 0;
+  gap: 18px;
+  display: flex;
+}
+.workspace .catalogue-reference-hero .search-input,
+.workspace .catalogue-reference-hero .filter-select {
+  background: #fffefa;
+  border: 1px solid #cbd3d4;
+  border-radius: 4px;
+  min-height: 38px;
+  height: 38px;
+  color: #34556a;
+}
+.workspace .catalogue-reference-hero .search-input {
+  flex: 1;
+}
+.workspace .catalogue-reference-hero .search-input input {
+  font-size: 10px;
+  color: #294e64;
+}
+.workspace .catalogue-reference-hero .search-input input::placeholder {
+  color: #45657a;
+}
+.workspace .catalogue-reference-hero .filter-select {
+  width: 130px;
+  padding-inline: 12px;
+}
+.workspace .catalogue-reference-hero .filter-select select {
+  color: #294e64;
+  font-size: 10px;
+  width: 100%;
+}
+.catalogue-reference-results {
+  padding: 14px 39px 16px;
+}
+.workspace .catalogue-reference-results > .notice {
+  padding: 10px 12px;
+  background: #f4f0e5;
+  border: 1px solid #e8dfcc;
+  border-radius: 4px;
+  font-size: 10px;
+  color: #455b62;
+  line-height: 1.7;
+  gap: 13px;
+}
+.workspace .catalogue-reference-results > .notice strong {
+  color: #143342;
+}
+.workspace .catalogue-reference-results > .notice > svg {
+  color: #9c762f;
+}
+.workspace .catalogue-reference-results .results-caption {
+  margin: 16px 0 14px;
+  color: #294f67;
+  font-size: 11px;
+}
+.workspace .catalogue-reference-results .results-caption span {
+  font-size: 6px;
+  letter-spacing: 0.08em;
+  color: #36586c;
+}
+.catalogue-reference-results .results-caption span::before {
+  content: "●";
+  color: #bc8931;
+  margin-right: 12px;
+}
+.workspace .catalogue-reference-results .catalogue-grid {
+  gap: 20px 23px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.workspace .catalogue-reference-results .catalogue-card {
+  background: #fdfcf9;
+  border: 1px solid #dfe3e4;
+  border-radius: 6px;
+  box-shadow: 0 5px 12px #08253406;
+}
+.workspace .catalogue-reference-results .catalogue-card:hover {
+  border-color: #b39a63;
+  transform: translateY(-2px);
+}
+.workspace .catalogue-reference-results .catalogue-art {
+  height: 160px;
+  background:
+    repeating-linear-gradient(135deg, #ffffff05 0 1px, #d4d9d605 1px 3px),
+    radial-gradient(ellipse at 70% 60%, #f3f3ef, #e0e3df);
+}
+.workspace .catalogue-reference-results .catalogue-art .coin-art {
+  width: 162px;
+  height: 162px;
+  filter: drop-shadow(2px 5px 4px #131e2460);
+}
+.workspace
+  .catalogue-reference-results
+  .catalogue-art
+  > span:not(.art-denomination) {
+  font-size: 5px;
+  bottom: 4px;
+  left: 9px;
+  color: #41555e;
+  letter-spacing: 0.25px;
+}
+.workspace .catalogue-reference-results .art-denomination {
+  top: 10px;
+  right: 10px;
+  font-size: 8px;
+  color: #103648;
+}
+.workspace .catalogue-reference-results .catalogue-card-copy {
+  padding: 10px 17px 0;
+}
+.workspace .catalogue-reference-results .tag {
+  background: #e8eef1;
+  border-color: #dbe4e8;
+  font-size: 8px;
+  padding: 3px 5px;
+  border-radius: 3px;
+  color: #305875;
+}
+.workspace .catalogue-reference-results .card-topline svg {
+  width: 15px;
+  color: #0b2c3d;
+}
+.workspace .catalogue-reference-results .catalogue-card h2 {
+  font:
+    16px/1.25 Georgia,
+    serif;
+  letter-spacing: -0.25px;
+  color: #123d56;
+  margin: 5px 0 0;
+}
+.workspace .catalogue-reference-results .catalogue-card p {
+  font-size: 8px;
+  margin: 9px 0 10px;
+  color: #315c78;
+}
+.workspace .catalogue-reference-results .catalogue-source {
+  padding-block: 10px;
+  font-size: 7px;
+  color: #31566d;
+  border-color: #e8e8e1;
+}
+.catalogue-reference-trust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 16px 39px;
+  min-height: 92px;
+  color: #fffdf5;
+  background:
+    linear-gradient(90deg, #00192288, #00192255 50%, #001922e6 72%),
+    url("/landing/cape-mountains.webp") center 58% / cover;
+}
+.trust-kicker {
+  font-size: 9px;
+  font-weight: 600;
+}
+.trust-kicker::before {
+  content: "⟵";
+  color: #efc475;
+  margin-right: 17px;
+}
+.workspace .catalogue-reference-trust h2 {
+  color: #fffdf5;
+  font:
+    italic 22px/1 Georgia,
+    serif;
+  margin-top: 6px;
+}
+.workspace .catalogue-reference-trust em {
+  color: #eace96;
+  font-family: Georgia, serif;
+}
+.catalogue-trust-copy {
+  display: flex;
+  gap: 13px;
+  max-width: 240px;
+  margin-left: auto;
+}
+.catalogue-trust-copy > svg {
+  color: #e7bf70;
+  flex-shrink: 0;
+}
+.workspace .catalogue-trust-copy h3 {
+  color: #fffdf5;
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+.catalogue-trust-copy p {
+  font-size: 8px;
+  line-height: 1.7;
+  color: #e2e8e9;
+}
+.catalogue-reference-trust > a {
+  border: 1px solid #b5a06a88;
+  color: #ebcb89;
+  font-size: 8px;
+  padding: 11px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.research-workspace-footer {
+  grid-column: 1 / -1;
+  color: #e4eaec;
+  background: #031720;
+  position: relative;
+  z-index: 31;
+  border-top: 1px solid #ffffff26;
+}
+.research-footer-top,
+.research-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 25px;
+}
+.research-footer-top {
+  border-bottom: 1px solid #ffffff26;
+}
+.research-footer-top .brand.brand-logo {
+  width: 165px;
+}
+.research-footer-top nav {
+  display: flex;
+  gap: 30px;
+}
+.research-footer-top a,
+.research-footer-top button {
+  font-size: 8px;
+  color: #eef0ed;
+}
+.research-footer-top button {
+  background: none;
+  border: 0;
+  padding: 10px 0;
+}
+.research-footer-bottom {
+  padding: 14px 39px 14px 259px;
+  font-size: 7px;
+  color: #c0ced3;
+}
+@media (min-width: 1600px) {
+  .workspace .catalogue-reference-results .catalogue-art {
+    height: 210px;
+  }
+  .workspace .catalogue-reference-results .catalogue-art .coin-art {
+    width: 210px;
+    height: 210px;
+  }
+}
+@media (max-width: 1050px) {
+  .reference-workspace.workspace {
+    grid-template-columns: 200px minmax(0, 1fr);
+  }
+  .reference-workspace.workspace .sidebar {
+    width: 200px;
+  }
+  .reference-workspace.workspace .sidebar .brand.brand-logo {
+    width: 176px;
+  }
+  .reference-workspace.workspace .workspace-top {
+    padding-inline: 24px;
+  }
+  .catalogue-reference-hero,
+  .catalogue-reference-results,
+  .catalogue-reference-trust {
+    padding-inline: 24px;
+  }
+  .workspace .catalogue-reference-results .catalogue-grid {
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .catalogue-trust-copy {
+    display: none;
+  }
+  .research-footer-bottom {
+    padding-left: 24px;
+  }
+}
+@media (max-width: 760px) {
+  .reference-workspace.workspace {
+    display: block;
+  }
+  .reference-workspace.workspace .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 240px;
+    overflow-y: auto;
+    padding-top: 24px;
+  }
+  .reference-workspace.workspace .sidebar .brand.brand-logo {
+    width: 195px;
+  }
+  .reference-workspace.workspace .sidebar::after {
+    display: none;
+  }
+  .reference-workspace.workspace .workspace-main {
+    margin-left: 0;
+  }
+  .reference-workspace.workspace .workspace-top {
+    padding-inline: 16px;
+    height: 56px;
+  }
+  .reference-workspace.workspace .breadcrumb {
+    gap: 7px;
+    font-size: 9px;
+  }
+  .reference-workspace.workspace .breadcrumb strong {
+    max-width: 150px;
+  }
+  .reference-workspace.workspace .mobile-menu {
+    color: #fffdf5;
+  }
+  .reference-workspace.workspace .mobile-close {
+    color: #fffdf5;
+  }
+  .catalogue-reference-hero {
+    padding: 25px 20px 15px;
+    background-position: 60% center;
+  }
+  .workspace .catalogue-reference-heading h1 {
+    font-size: 36px;
+  }
+  .catalogue-reference-heading p {
+    max-width: 250px;
+    line-height: 1.6;
+  }
+  .workspace .catalogue-reference-hero .catalogue-toolbar {
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+  .workspace .catalogue-reference-hero .search-input {
+    flex-basis: 100%;
+  }
+  .workspace .catalogue-reference-hero .filter-select {
+    width: 100%;
+  }
+  .catalogue-reference-results {
+    padding: 15px 20px 22px;
+  }
+  .workspace .catalogue-reference-results .results-caption {
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .workspace .catalogue-reference-results .results-caption span {
+    max-width: 120px;
+    text-align: right;
+    line-height: 1.5;
+  }
+  .catalogue-reference-trust {
+    padding: 22px 20px;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .research-workspace-footer {
+    z-index: 1;
+  }
+  .research-footer-top {
+    flex-wrap: wrap;
+    padding: 18px 20px;
+    gap: 18px;
+  }
+  .research-footer-top nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .research-footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+}
+@media (max-width: 540px) {
+  .workspace .catalogue-reference-results .catalogue-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .workspace .catalogue-reference-results .catalogue-art {
+    height: 190px;
+  }
+  .workspace .catalogue-reference-results .catalogue-art .coin-art {
+    width: 195px;
+    height: 195px;
+  }
+  .workspace .catalogue-reference-results .catalogue-card-copy {
+    padding-inline: 17px;
+  }
+  .workspace .catalogue-reference-results .catalogue-card h2 {
+    font-size: 19px;
+  }
+  .workspace .catalogue-reference-results .catalogue-card p {
+    font-size: 10px;
+  }
+  .workspace .catalogue-reference-results .catalogue-source {
+    font-size: 9px;
+    padding-block: 13px;
+  }
+}
+
+.workspace .catalogue-reference-heading em,
+.workspace .catalogue-reference-trust em {
+  font-style: italic;
+}
+.workspace .catalogue-reference-results > .notice {
+  margin: 0;
+}
+.research-footer-top > a {
+  flex-shrink: 0;
+  display: inline-flex;
+}
+.workspace .catalogue-reference-hero .catalogue-toolbar {
+  margin-top: 15px;
+}
+.catalogue-reference-hero {
+  background-position: center 40%;
+}
+@media (max-width: 760px) {
+  .catalogue-reference-hero {
+    background-image:
+      linear-gradient(90deg, #00151de8, #00151d60),
+      url("/landing/coin-atlas-hero.webp");
+    background-position: 60% center;
+  }
+  .workspace .catalogue-reference-hero .catalogue-toolbar {
+    margin-top: 20px;
+  }
+}
