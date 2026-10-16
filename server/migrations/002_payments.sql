@@ -1,0 +1,4 @@
+CREATE TABLE payment_receipts (
+ reference TEXT PRIMARY KEY, user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+ paid_at TEXT NOT NULL, received_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);

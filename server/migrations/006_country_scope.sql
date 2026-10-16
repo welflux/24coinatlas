@@ -1,0 +1,1 @@
+ALTER TABLE catalogue ADD COLUMN country_code TEXT NOT NULL DEFAULT 'ZA';

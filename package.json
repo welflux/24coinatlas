@@ -1,0 +1,39 @@
+{
+  "name": "24coinatlas",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:web": "vite --host 0.0.0.0",
+    "dev:api": "node --watch --env-file-if-exists=.env server/index.js",
+    "build": "vite build",
+    "start": "NODE_ENV=production node --env-file-if-exists=.env server/index.js",
+    "test": "node --test --test-concurrency=1 tests/*.test.js",
+    "db:migrate": "node --env-file-if-exists=.env scripts/migrate.mjs",
+    "db:backup": "node --env-file-if-exists=.env scripts/backup.mjs",
+    "data:import": "node --env-file-if-exists=.env scripts/import-data.mjs",
+    "test:browser": "npm run build && node tests/browser.mjs",
+    "data:snapshot": "node --env-file-if-exists=.env scripts/capture-valuations.mjs",
+    "data:maintain": "node --env-file-if-exists=.env scripts/maintenance.mjs",
+    "format:check": "prettier --check src server scripts tests docs index.html vite.config.js package.json README.md"
+  },
+  "devDependencies": {
+    "axe-core": "^4.14.0",
+    "playwright": "^1.64.1",
+    "prettier": "^3.9.10",
+    "supertest": "^7.3.1",
+    "vite": "^6.4.1"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0",
+    "lucide-react": "^1.58.0",
+    "multer": "^2.4.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "sharp": "^0.35.5",
+    "zod": "^4.6.7"
+  }
+}
