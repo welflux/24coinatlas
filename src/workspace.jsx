@@ -11,6 +11,7 @@ import {
   Bookmark,
   CheckCircle2,
   ScanLine,
+  LockKeyhole,
   Camera,
   Upload,
   X,
@@ -657,211 +658,285 @@ export function Identify({ session, navigate, caps, openCoin, setSession }) {
     }
   }
   return (
-    <>
+    <div className="analysis-workspace">
       <Heading
-        eyebrow="A CLOSER LOOK"
-        title="Let’s get to know your coin."
-        description="Start with clear photographs of both sides. Good identification begins with the details."
+        eyebrow="COIN RESEARCH / IDENTIFICATION WORKBENCH"
+        title="A closer look. A clearer record."
+        description="Capture both sides, examine the observations, and review before saving."
       />
-      {!session ? (
-        <Gate navigate={navigate} title="Your photographs belong to you." />
-      ) : (
-        <>
-          <div className="identify-layout">
-            <section className="panel upload-panel">
-              <div className="panel-heading">
-                <div>
-                  <h2>Two sides. A better perspective.</h2>
-                  <p>
-                    JPEG, PNG or WebP · up to 6 MB per photo · at least 200 ×
-                    200 px
-                  </p>
-                </div>
-                <Tag>PRIVATE</Tag>
-              </div>
-              <div className="photo-pair">
-                <PhotoUpload
-                  side="obverse"
-                  label="Obverse / front"
-                  photo={front}
-                  setPhoto={(p) => {
-                    setFront(p);
-                    setResult(null);
-                  }}
-                  disabled={busy}
-                />
-                <PhotoUpload
-                  side="reverse"
-                  label="Reverse / back"
-                  photo={back}
-                  setPhoto={(p) => {
-                    setBack(p);
-                    setResult(null);
-                  }}
-                  disabled={busy}
-                />
-              </div>
-              <div className="photo-tips">
-                <Camera size={20} />
+      <div className="analysis-systembar">
+        <span>
+          <LockKeyhole size={14} />
+          PRIVATE PHOTOGRAPH CAPTURE
+        </span>
+        <span
+          className={
+            caps.ai.available ? "analysis-provider ready" : "analysis-provider"
+          }
+        >
+          <i />
+          {caps.ai.available
+            ? "AI provider connected"
+            : "AI provider not connected"}
+        </span>
+      </div>
+      <ol className="analysis-phases" aria-label="Identification workflow">
+        {[
+          ["01", "Capture", "Photograph the coin"],
+          ["02", "Analyse", "Request AI observations"],
+          ["03", "Review & record", "Check before saving"],
+        ].map(([n, title, text], i) => (
+          <li
+            key={n}
+            aria-current={
+              (result ? i === 2 : busy ? i === 1 : i === 0) ? "step" : undefined
+            }
+          >
+            <span>{n}</span>
+            <div>
+              <strong>{title}</strong>
+              <small>{text}</small>
+            </div>
+          </li>
+        ))}
+      </ol>
+      {!session && (
+        <div className="analysis-access">
+          <LockKeyhole size={20} />
+          <div>
+            <strong>Your photographs stay in your private workspace.</strong>
+            <p>
+              Sign in before uploading or saving a coin. The catalogue remains
+              open to everyone.
+            </p>
+          </div>
+          <a href="/login" data-route className="button">
+            Sign in to continue <ArrowUpRight size={16} />
+          </a>
+        </div>
+      )}
+      <>
+        <div className="identify-layout">
+          <section className="panel upload-panel">
+            <div className="panel-heading">
+              <div>
+                <div className="enterprise-kicker">01 / PHOTOGRAPH CAPTURE</div>
+                <h2>Start with both sides.</h2>
                 <p>
-                  Use soft, even light and a plain background. Keep the whole
-                  coin in frame. Never clean a coin just to photograph it.
+                  JPEG, PNG or WebP · up to 6 MB per photo · at least 200 × 200
+                  px
                 </p>
               </div>
-              {!caps.ai.available && (
-                <Notice tone="warning">
-                  <strong>AI identification isn’t connected yet.</strong> You
-                  can upload photographs and save a manual record. No scan
-                  allowance will be used.
-                </Notice>
-              )}
-              {caps.ai.available && (
-                <label className="consent">
-                  <input
-                    type="checkbox"
-                    checked={consent}
-                    onChange={(e) => setConsent(e.target.checked)}
-                  />
-                  <span>
-                    I agree to send these photographs to the configured AI
-                    provider. Avoid including people or personal information.
-                  </span>
-                </label>
-              )}
-              <div className="upload-actions">
-                <Button
-                  icon={busy ? LoaderCircle : ScanLine}
-                  disabled={!front || !consent || !caps.ai.available || busy}
-                  onClick={identify}
-                >
-                  {busy ? "Examining your photographs…" : "Identify this coin"}
-                </Button>
-                <Button
-                  variant="secondary"
-                  icon={Plus}
-                  disabled={busy}
-                  onClick={() =>
-                    openCoin({ photos: [front, back].filter(Boolean) })
-                  }
-                >
-                  Record manually
-                </Button>
-              </div>
-              {error && <Notice tone="error">{error}</Notice>}
-              <small className="scan-allowance">
-                {session.entitlements.scans_used} of{" "}
-                {session.entitlements.scan_limit} monthly scans used. Resets
-                each calendar month (UTC).
-              </small>
-            </section>
-            <aside className="identification-notes">
-              <div className="eyebrow">KNOW WHAT YOU’RE SEEING</div>
-              <h2>
-                A helpful first look.
-                <br />
-                <em>Not the final word.</em>
-              </h2>
-              {[
-                [
-                  Eye,
-                  "Visible observations",
-                  "What can be seen is separated from what is inferred.",
-                ],
-                [
-                  CircleHelp,
-                  "Honest uncertainty",
-                  "A faint date should never become a confident claim.",
-                ],
-                [
-                  ShieldCheck,
-                  "Expert assessment",
-                  "Photographs cannot certify grade, metal or authenticity.",
-                ],
-              ].map(([Icon, h, p]) => (
-                <div className="note-item" key={h}>
-                  <Icon size={19} />
-                  <div>
-                    <h3>{h}</h3>
-                    <p>{p}</p>
-                  </div>
-                </div>
-              ))}
-            </aside>
-          </div>
-          {result && (
-            <section className="panel scan-result">
-              <div className="panel-heading">
-                <div>
-                  <div className="eyebrow">
-                    AI PREDICTION · NOT VERIFIED CATALOGUE INFORMATION
-                  </div>
-                  <h2>{result.prediction.likely_name}</h2>
-                </div>
-                <Tag tone="amber">
-                  {result.prediction.confidence} model confidence
-                </Tag>
-              </div>
-              <Notice>
-                {result.prediction.image_quality === "insufficient"
-                  ? "Insufficient image quality. Try clearer images of both sides."
-                  : "Tentative interpretation, not an authenticated identification. Model confidence is not a calibrated probability."}
+              <Tag>
+                <LockKeyhole size={11} /> PRIVATE
+              </Tag>
+            </div>
+            <div className="photo-pair">
+              <PhotoUpload
+                side="obverse"
+                label="Obverse / front"
+                photo={front}
+                setPhoto={(p) => {
+                  setFront(p);
+                  setResult(null);
+                }}
+                disabled={busy || !session}
+              />
+              <PhotoUpload
+                side="reverse"
+                label="Reverse / back"
+                photo={back}
+                setPhoto={(p) => {
+                  setBack(p);
+                  setResult(null);
+                }}
+                disabled={busy || !session}
+              />
+            </div>
+            <div className="photo-tips">
+              <Camera size={20} />
+              <p>
+                Use soft, even light and a plain background. Keep the whole coin
+                in frame. Never clean a coin just to photograph it.
+              </p>
+            </div>
+            {!caps.ai.available && (
+              <Notice tone="warning">
+                <strong>AI identification isn’t connected yet.</strong>{" "}
+                {session
+                  ? "You can upload photographs and save a manual record."
+                  : "After signing in, you can upload photographs and save a manual record."}{" "}
+                No scan allowance will be used.
               </Notice>
-              <dl className="facts">
-                {[
-                  ["Country", result.prediction.country],
-                  ["Denomination", result.prediction.denomination],
-                  ["Year", result.prediction.year],
-                  ["Design", result.prediction.design],
-                  ["Series", result.prediction.series],
-                  ["Mint mark", result.prediction.mint_mark],
-                  ["Metal (tentative)", result.prediction.metal],
-                ].map(([k, v]) => (
-                  <div key={k}>
-                    <dt>{k}</dt>
-                    <dd>{v || "Not established"}</dd>
-                  </div>
-                ))}
-              </dl>
-              <h3>Visible observations</h3>
-              <ul>
-                {result.prediction.observations.map((v, i) => (
-                  <li key={i}>{v}</li>
-                ))}
-              </ul>
-              <h3>What remains uncertain</h3>
-              <ul>
-                {result.prediction.uncertainties.map((v, i) => (
-                  <li key={i}>{v}</li>
-                ))}
-              </ul>
-              <p>{result.prediction.condition_guidance}</p>
-              {result.prediction.possible_variety && (
-                <Notice>
-                  Possible variety for investigation only:{" "}
-                  {result.prediction.possible_variety}
-                </Notice>
-              )}
-              {result.prediction.expert_review_recommended && (
-                <Tag tone="amber">Independent expert review recommended</Tag>
-              )}
+            )}
+            {caps.ai.available && session && (
+              <label className="consent">
+                <input
+                  type="checkbox"
+                  checked={consent}
+                  onChange={(e) => setConsent(e.target.checked)}
+                />
+                <span>
+                  I agree to send these photographs to the configured AI
+                  provider. Avoid including people or personal information.
+                </span>
+              </label>
+            )}
+            <div className="upload-actions">
               <Button
+                icon={busy ? LoaderCircle : ScanLine}
+                disabled={
+                  !session || !front || !consent || !caps.ai.available || busy
+                }
+                onClick={identify}
+              >
+                {busy ? "Examining your photographs…" : "Identify this coin"}
+              </Button>
+              <Button
+                variant="secondary"
                 icon={Plus}
+                disabled={busy || !session}
                 onClick={() =>
-                  openCoin({
-                    name: result.prediction.likely_name,
-                    denomination: result.prediction.denomination || "",
-                    year: result.prediction.year,
-                    notes: `Unverified AI suggestion (${result.prediction.confidence} model confidence). ${result.prediction.uncertainties.join(" ")}`,
-                    photos: [front, back].filter(Boolean),
-                  })
+                  openCoin({ photos: [front, back].filter(Boolean) })
                 }
               >
-                Review and save a record
+                Record manually
               </Button>
-            </section>
-          )}
-        </>
-      )}
-    </>
+            </div>
+            {error && <Notice tone="error">{error}</Notice>}
+            <small className="scan-allowance">
+              {session
+                ? `${session.entitlements.scans_used} of ${session.entitlements.scan_limit} monthly scans used.`
+                : "Sign in to view your monthly scan allowance."}{" "}
+              Resets each calendar month (UTC).
+            </small>
+          </section>
+          <aside className="identification-notes">
+            <div className="eyebrow">ASSESSMENT PROTOCOL</div>
+            <h2>
+              Research support.
+              <br />
+              Human judgement.
+            </h2>
+            <p className="analysis-protocol-intro">
+              A photograph is a starting point. Keep the limitations alongside
+              the observations.
+            </p>
+            {[
+              [
+                Eye,
+                "Visible observations",
+                "What can be seen is separated from what is inferred.",
+              ],
+              [
+                CircleHelp,
+                "Honest uncertainty",
+                "A faint date should never become a confident claim.",
+              ],
+              [
+                ShieldCheck,
+                "Expert assessment",
+                "Photographs cannot certify grade, metal or authenticity.",
+              ],
+            ].map(([Icon, h, p]) => (
+              <div className="note-item" key={h}>
+                <Icon size={19} />
+                <div>
+                  <h3>{h}</h3>
+                  <p>{p}</p>
+                </div>
+              </div>
+            ))}
+          </aside>
+        </div>
+        {busy && (
+          <div className="analysis-progress" role="status">
+            <LoaderCircle size={20} className="spin" />
+            <div>
+              <strong>Preparing research observations…</strong>
+              <p>
+                Wait for the provider response. No identity is confirmed by this
+                step.
+              </p>
+            </div>
+          </div>
+        )}
+        {result && (
+          <section
+            className="panel scan-result"
+            aria-label="AI observations for review"
+          >
+            <div className="panel-heading">
+              <div>
+                <div className="eyebrow">
+                  AI PREDICTION · NOT VERIFIED CATALOGUE INFORMATION
+                </div>
+                <h2>{result.prediction.likely_name}</h2>
+              </div>
+              <Tag tone="amber">
+                {result.prediction.confidence} model confidence
+              </Tag>
+            </div>
+            <Notice>
+              {result.prediction.image_quality === "insufficient"
+                ? "Insufficient image quality. Try clearer images of both sides."
+                : "Tentative interpretation, not an authenticated identification. Model confidence is not a calibrated probability."}
+            </Notice>
+            <dl className="facts">
+              {[
+                ["Country", result.prediction.country],
+                ["Denomination", result.prediction.denomination],
+                ["Year", result.prediction.year],
+                ["Design", result.prediction.design],
+                ["Series", result.prediction.series],
+                ["Mint mark", result.prediction.mint_mark],
+                ["Metal (tentative)", result.prediction.metal],
+              ].map(([k, v]) => (
+                <div key={k}>
+                  <dt>{k}</dt>
+                  <dd>{v || "Not established"}</dd>
+                </div>
+              ))}
+            </dl>
+            <h3>Visible observations</h3>
+            <ul>
+              {result.prediction.observations.map((v, i) => (
+                <li key={i}>{v}</li>
+              ))}
+            </ul>
+            <h3>What remains uncertain</h3>
+            <ul>
+              {result.prediction.uncertainties.map((v, i) => (
+                <li key={i}>{v}</li>
+              ))}
+            </ul>
+            <p>{result.prediction.condition_guidance}</p>
+            {result.prediction.possible_variety && (
+              <Notice>
+                Possible variety for investigation only:{" "}
+                {result.prediction.possible_variety}
+              </Notice>
+            )}
+            {result.prediction.expert_review_recommended && (
+              <Tag tone="amber">Independent expert review recommended</Tag>
+            )}
+            <Button
+              icon={Plus}
+              onClick={() =>
+                openCoin({
+                  name: result.prediction.likely_name,
+                  denomination: result.prediction.denomination || "",
+                  year: result.prediction.year,
+                  notes: `Unverified AI suggestion (${result.prediction.confidence} model confidence). ${result.prediction.uncertainties.join(" ")}`,
+                  photos: [front, back].filter(Boolean),
+                })
+              }
+            >
+              Review and save a record
+            </Button>
+          </section>
+        )}
+      </>
+    </div>
   );
 }

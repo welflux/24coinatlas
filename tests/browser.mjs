@@ -39,6 +39,7 @@ try {
   const violations = [];
   for (const width of [1440, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 900 });
+    await page.goto(origin + "/", { waitUntil: "networkidle" });
     for (const route of [
       "/",
       "/app",
@@ -47,9 +48,21 @@ try {
       "/app/research",
       "/app/billing",
       "/register",
+      "/login",
+      "/forgot-password",
+      "/reset-password?token=expired-layout-test",
+      "/verify-email",
+      "/app/identify",
     ]) {
-      await page.goto(origin + route, { waitUntil: "networkidle" });
+      // Responsive audits use the supported SPA history navigation. Repeated
+      // full reloads of every route can exhaust real API rate limits.
+      await page.evaluate((route) => {
+        window.history.pushState({}, "", route);
+        window.dispatchEvent(new PopStateEvent("popstate"));
+      }, route);
+      await page.waitForURL(origin + route);
       await page.locator("h1").waitFor();
+      await page.waitForLoadState("networkidle");
       assert.equal(
         await page.evaluate(
           () => document.documentElement.scrollWidth > innerWidth,
@@ -97,6 +110,51 @@ try {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto(origin + "/", { waitUntil: "networkidle" });
   assert.equal(await page.locator('a[href="/register"]').count(), 0);
+  await page.goto(origin + "/register", { waitUntil: "networkidle" });
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Create free account", exact: true })
+      .isDisabled(),
+    true,
+  );
+  await page.getByText(/New accounts are temporarily unavailable/).waitFor();
+  await page.goto(origin + "/forgot-password", { waitUntil: "networkidle" });
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Request secure link" })
+      .isDisabled(),
+    true,
+  );
+  await page.goto(origin + "/login", { waitUntil: "networkidle" });
+  await page
+    .getByLabel("Password", { exact: true })
+    .fill("synthetic test passphrase");
+  await page
+    .getByRole("button", { name: "Show password", exact: true })
+    .click();
+  assert.equal(
+    await page.getByLabel("Password", { exact: true }).getAttribute("type"),
+    "text",
+  );
+  await page
+    .getByRole("button", { name: "Hide password", exact: true })
+    .click();
+  assert.equal(
+    await page.getByLabel("Password", { exact: true }).getAttribute("type"),
+    "password",
+  );
+  await page.goto(origin + "/app/identify", { waitUntil: "networkidle" });
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Choose photo", exact: true })
+      .first()
+      .isDisabled(),
+    true,
+  );
+  await page
+    .getByRole("link", { name: "Sign in to continue", exact: true })
+    .waitFor();
+  await page.goto(origin + "/", { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "Open menu", exact: true }).click();
   await page.keyboard.press("Escape");
   assert.equal(
@@ -138,6 +196,17 @@ try {
     .getByRole("button", { name: "Create free account", exact: true })
     .click();
   await page.getByRole("heading", { name: "Welcome back, Browser." }).waitFor();
+  await page.getByRole("button", { name: "Sign out", exact: true }).click();
+  await page.goto(origin + "/login", { waitUntil: "networkidle" });
+  await page.getByLabel("Email address").fill("browser-collector@example.com");
+  await page
+    .getByLabel("Password", { exact: true })
+    .fill("a private browser test password");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await page.getByRole("heading", { name: "Welcome back, Browser." }).waitFor();
+  console.log(
+    "PASS split-panel registration, sign-out and password-manager-compatible sign-in",
+  );
   await page.goto(origin + "/app/collection");
   await page
     .getByRole("button", { name: "Add a coin", exact: true })
@@ -271,7 +340,19 @@ try {
   await page.setViewportSize({ width: 1440, height: 1000 });
   for (const route of ["/app/identify", "/app/collection", "/app/settings"]) {
     await page.goto(origin + route, { waitUntil: "networkidle" });
-    await page.locator("h1").waitFor();
+    await page
+      .locator("h1")
+      .waitFor()
+      .catch(async (error) => {
+        console.error(
+          JSON.stringify({
+            route,
+            errors,
+            text: await page.locator("body").innerText(),
+          }),
+        );
+        throw error;
+      });
     await page.addScriptTag({ url: origin + "/test/axe.js" });
     const findings = await page.evaluate(() =>
       axe.run(document, {
@@ -301,7 +382,7 @@ try {
     process.exitCode = 1;
   } else
     console.log(
-      "PASS WCAG A/AA automated checks on ten public and authenticated screens",
+      "PASS WCAG A/AA automated checks on public, account-access and authenticated screens",
     );
   await page.goto(origin + "/app");
   await page.setViewportSize({ width: 1440, height: 1000 });

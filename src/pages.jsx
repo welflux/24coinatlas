@@ -21,6 +21,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { api, setCsrf } from "./api";
+import { AuthLayout } from "./auth-layout";
 import {
   Brand,
   Button,
@@ -593,11 +594,13 @@ export function Landing({ session, caps }) {
   );
 }
 
-export function Auth({ mode, navigate, setSession, notify, session }) {
+export function Auth({ mode, navigate, setSession, notify, session, caps }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [show, setShow] = useState(false),
     register = mode === "register";
+  const registrationReady =
+    !caps?.auth?.verification_required || caps?.auth?.email_available;
   async function submit(e) {
     e.preventDefault();
     setError("");
@@ -630,339 +633,452 @@ export function Auth({ mode, navigate, setSession, notify, session }) {
     }
   }
   return (
-    <div className="auth-page">
-      <a href="/" data-route className="auth-brand">
-        <Brand />
-      </a>
-      <main id="main" className="auth-card">
-        <div className="eyebrow">YOUR COLLECTION STARTS HERE</div>
-        <h1>{register ? "A home for your coins." : "Welcome back."}</h1>
-        <p>
-          {register
-            ? "Create a free account. No payment details required."
-            : "Sign in to your private collection and research."}
-        </p>
-        {session ? (
-          <Notice>
-            You’re already signed in.{" "}
-            <a data-route href="/app">
-              Open your workspace →
-            </a>
-          </Notice>
-        ) : (
-          <form onSubmit={submit}>
-            {register && (
-              <Field
-                label="Your name"
-                name="name"
-                autoComplete="name"
-                maxLength={80}
-                required
-              />
-            )}
+    <AuthLayout mode={mode}>
+      <div className="auth-form-topline">
+        <LockKeyhole size={15} />
+        <span>{register ? "CREATE YOUR WORKSPACE" : "ACCOUNT ACCESS"}</span>
+        <span>24 / ATLAS</span>
+      </div>
+      <div className="eyebrow">
+        {register ? "YOUR COLLECTION STARTS HERE" : "YOUR PRIVATE WORKSPACE"}
+      </div>
+      <h1>{register ? "Create your account." : "Welcome back."}</h1>
+      <p>
+        {register
+          ? "Create a free account. No payment details required."
+          : "Sign in to your private collection and research."}
+      </p>
+      {register && !registrationReady && !session && (
+        <Notice>
+          New accounts are temporarily unavailable while verification-email
+          delivery is being prepared. You can still{" "}
+          <a href="/app/catalogue" data-route>
+            explore the public catalogue
+          </a>
+          .
+        </Notice>
+      )}
+      {session ? (
+        <Notice>
+          You’re already signed in.{" "}
+          <a data-route href="/app">
+            Open your workspace →
+          </a>
+        </Notice>
+      ) : (
+        <form onSubmit={submit}>
+          {register && (
             <Field
-              label="Email address"
-              name="email"
-              type="email"
-              autoComplete="email"
-              maxLength={254}
+              label="Your name"
+              name="name"
+              autoComplete="name"
+              maxLength={80}
               required
             />
-            <label className="field" htmlFor="auth-password">
-              <span>Password</span>
-              <div className="password-input">
-                <input
-                  id="auth-password"
-                  aria-label="Password"
-                  name="password"
-                  type={show ? "text" : "password"}
-                  minLength={register ? 12 : 1}
-                  maxLength={128}
-                  autoComplete={register ? "new-password" : "current-password"}
-                  required
-                />
-                <button
-                  type="button"
-                  aria-label={show ? "Hide password" : "Show password"}
-                  onClick={() => setShow(!show)}
-                >
-                  {show ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-              {register && (
-                <small>
-                  At least 12 characters. A memorable passphrase works well.
-                </small>
-              )}
-            </label>
-            {error && <Notice tone="error">{error}</Notice>}
-            <Button type="submit" disabled={busy}>
-              {busy
-                ? "Please wait…"
-                : register
-                  ? "Create free account"
-                  : "Sign in"}
-            </Button>
-          </form>
-        )}
-        <p className="auth-switch">
-          {register ? "Already a collector here?" : "New to 24CoinAtlas?"}{" "}
-          <a href={register ? "/login" : "/register"} data-route>
-            {register ? "Sign in" : "Create an account"}
-          </a>
-        </p>
-        <p className="auth-recovery">
-          <a href="/forgot-password" data-route>
-            Forgot password?
-          </a>
-          <a href="/verify-email" data-route>
-            Verify email
-          </a>
-        </p>
-        <div className="auth-privacy">
-          <LockKeyhole size={14} />
-          <span>
-            Your inventory and photographs are private. Photo analysis is
-            optional and requires your consent.
-          </span>
-        </div>
-      </main>
-      <a href="/" data-route className="back-link">
-        <ArrowLeft size={14} /> Back to 24CoinAtlas
-      </a>
-    </div>
+          )}
+          <Field
+            label="Email address"
+            name="email"
+            type="email"
+            autoComplete="email"
+            maxLength={254}
+            required
+          />
+          <label className="field" htmlFor="auth-password">
+            <span>Password</span>
+            <div className="password-input">
+              <input
+                id="auth-password"
+                aria-label="Password"
+                name="password"
+                type={show ? "text" : "password"}
+                minLength={register ? 12 : 1}
+                maxLength={128}
+                autoComplete={register ? "new-password" : "current-password"}
+                required
+              />
+              <button
+                type="button"
+                aria-label={show ? "Hide password" : "Show password"}
+                aria-pressed={show}
+                onClick={() => setShow(!show)}
+              >
+                {show ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            {register && (
+              <small>
+                At least 12 characters. A memorable passphrase works well.
+              </small>
+            )}
+          </label>
+          {error && <Notice tone="error">{error}</Notice>}
+          <Button
+            type="submit"
+            disabled={busy || (register && !registrationReady)}
+          >
+            {busy
+              ? "Please wait…"
+              : register
+                ? "Create free account"
+                : "Sign in"}
+          </Button>
+        </form>
+      )}
+      <p className="auth-switch">
+        {register ? "Already a collector here?" : "New to 24CoinAtlas?"}{" "}
+        <a href={register ? "/login" : "/register"} data-route>
+          {register ? "Sign in" : "Create an account"}
+        </a>
+      </p>
+      <p className="auth-recovery">
+        <a href="/forgot-password" data-route>
+          Forgot password?
+        </a>
+        <a href="/verify-email" data-route>
+          Verify email
+        </a>
+      </p>
+      <div className="auth-privacy">
+        <LockKeyhole size={14} />
+        <span>
+          Your inventory and photographs are private. Photo analysis is optional
+          and requires your consent.
+        </span>
+      </div>
+    </AuthLayout>
   );
 }
 
 export function Dashboard({ session, navigate, caps, openCoin, revision }) {
-  const collection = useResource(session ? "/collection" : null, revision),
-    catalogue = useResource("/catalogue");
+  const collection = useResource(session ? "/collection" : null, revision);
+  const catalogue = useResource("/catalogue");
+  const summary = collection.data?.summary;
+  const readyToRegister =
+    !caps.auth.verification_required || caps.auth.email_available;
   return (
-    <>
+    <div className="atlas-dashboard">
       <Heading
-        eyebrow="A NEW PERSPECTIVE ON YOUR COLLECTION"
+        eyebrow="COLLECTOR WORKSPACE / OVERVIEW"
         title={
           session
             ? `Welcome back, ${session.name.split(" ")[0]}.`
-            : "Every coin has a story."
+            : "Your collection. In focus."
         }
-        description="Discover the history. Follow the evidence. Know your collection."
+        description="A clear view of your records, research and next steps."
       >
-        <Button onClick={() => navigate("/app/identify")} icon={ScanLine}>
+        <Button variant="secondary" icon={Plus} onClick={() => openCoin()}>
+          Add a coin
+        </Button>
+        <Button icon={ScanLine} onClick={() => navigate("/app/identify")}>
           Identify a coin
         </Button>
       </Heading>
-      <section className="dashboard-hero">
-        <div className="dashboard-hero-copy">
-          <Tag tone="dark">MADE FOR SOUTH AFRICAN COLLECTORS</Tag>
+      <div className="desk-context">
+        <span>
+          <LockKeyhole size={13} />
+          {session ? "PRIVATE COLLECTOR WORKSPACE" : "PUBLIC WORKSPACE PREVIEW"}
+        </span>
+        <span>
+          SOUTH AFRICA <i /> ZAR
+        </span>
+      </div>
+      <section className="desk-workbench">
+        <div>
+          <span className="enterprise-kicker">
+            THE IDENTIFICATION WORKBENCH
+          </span>
           <h2>
-            What’s the story
-            <br />
-            behind <em>your coin?</em>
+            Every detail is
+            <br />a starting point.
           </h2>
           <p>
-            From an inherited penny to a modern R5.
-            <br />
-            Start with a closer look.
+            Capture both sides. Record what you know. Keep observations separate
+            from assumptions.
           </p>
-          <button
-            onClick={() => navigate("/app/identify")}
-            className="hero-text-button"
-          >
-            Explore a coin <ArrowRight size={17} />
-          </button>
+          <a href="/app/identify" data-route className="desk-primary-link">
+            Open the workbench <ArrowUpRight size={18} />
+          </a>
         </div>
-        <div className="dashboard-coin-art">
-          <div className="orbital-ring" />
-          <CoinArt kind="krugerrand" />
-          <CoinArt kind="mandela" />
-          <span>ILLUSTRATED SOUTH AFRICAN COINAGE</span>
+        <div
+          className="desk-capture-preview"
+          aria-label="Photograph workflow preview"
+        >
+          <div className="desk-capture-top">
+            <ScanLine size={15} />
+            <span>PHOTOGRAPH → OBSERVE → RECORD</span>
+          </div>
+          <div className="desk-specimen-pair">
+            {["OBVERSE", "REVERSE"].map((side, i) => (
+              <div key={side}>
+                <span>
+                  0{i + 1} / {side}
+                </span>
+                <div className="desk-specimen-outline">
+                  <span>{i === 0 ? "O" : "R"}</span>
+                </div>
+                <small>YOUR PHOTOGRAPH</small>
+              </div>
+            ))}
+          </div>
+          <div className="desk-capture-bottom">
+            <span
+              className={`desk-indicator ${caps.ai.available ? "ready" : ""}`}
+            />
+            {caps.ai.available
+              ? "AI observations available with consent"
+              : "Manual records available · AI not connected"}
+          </div>
         </div>
       </section>
-      <section className="stat-grid">
-        <div className="stat-card">
-          <span>
-            <Layers size={17} /> COLLECTION
-          </span>
-          <strong>
-            {session ? (collection.data?.summary.coins ?? "—") : "—"}
-            <small>coins recorded</small>
-          </strong>
-          <div>
-            {session
-              ? `${collection.data?.summary.records ?? 0} collection records`
-              : "Your story starts with one coin"}
+      <section className="desk-metrics" aria-label="Collection overview">
+        {[
+          [
+            Layers,
+            "COINS RECORDED",
+            session && summary ? summary.coins : "—",
+            session && summary
+              ? `${summary.records} collection records`
+              : "Private collection account required",
+          ],
+          [
+            Coins,
+            "ACQUISITION COST",
+            session && summary ? money(summary.acquisition_minor) : "—",
+            summary?.costs_missing
+              ? `${summary.costs_missing} records without a cost`
+              : "Your recorded costs, not market value",
+          ],
+          [
+            ScanLine,
+            "MONTHLY SCANS USED",
+            session
+              ? `${session.entitlements.scans_used} / ${session.entitlements.scan_limit}`
+              : "—",
+            caps.ai.available
+              ? "Resets each calendar month (UTC)"
+              : "AI connection pending · No scan used",
+          ],
+          [
+            BookOpen,
+            "CATALOGUE RECORDS",
+            catalogue.data ? catalogue.data.items.length : "—",
+            `${caps.catalogue.verified} independently verified`,
+          ],
+        ].map(([Icon, label, value, note]) => (
+          <div className="desk-metric" key={label}>
+            <span>
+              <Icon size={16} />
+              {label}
+            </span>
+            <strong>{value}</strong>
+            <p>{note}</p>
           </div>
-        </div>
-        <div className="stat-card">
-          <span>
-            <Coins size={17} /> ACQUISITION COST
-          </span>
-          <strong>
-            {session && collection.data
-              ? money(collection.data.summary.acquisition_minor)
-              : "—"}
-            <small>recorded spend</small>
-          </strong>
-          <div>
-            {collection.data?.summary.costs_missing
-              ? `${collection.data.summary.costs_missing} records have no cost`
-              : "Owner-entered costs, not market value"}
-          </div>
-        </div>
-        <div className="stat-card">
-          <span>
-            <ScanLine size={17} /> MONTHLY IDENTIFICATIONS
-          </span>
-          <strong>
-            {session ? session.entitlements.scans_used : "0"}
-            <small>
-              /{" "}
-              {session
-                ? session.entitlements.scan_limit
-                : caps.plans.free.monthly_scans}{" "}
-              scans
-            </small>
-          </strong>
-          <div>
-            <i className={`status-dot ${caps.ai.available ? "" : "amber"}`} />
-            {caps.ai.available
-              ? "AI service configured"
-              : "AI connection pending"}
-          </div>
-        </div>
+        ))}
       </section>
       {collection.error && <Notice tone="error">{collection.error}</Notice>}
-      <div className="dashboard-columns">
-        <section className="panel">
+      <div className="desk-content-grid">
+        <section className="panel desk-inventory">
           <div className="panel-heading">
             <div>
-              <h2>Your collection, at a glance</h2>
-              <p>A record of the coins and stories you’re keeping.</p>
+              <span className="enterprise-kicker">COLLECTION REGISTER</span>
+              <h2>Recent coin records</h2>
             </div>
-            <button
-              className="text-link"
-              onClick={() => navigate("/app/collection")}
-            >
-              View collection <ArrowRight size={15} />
-            </button>
+            <a href="/app/collection" data-route className="text-link">
+              View all <ArrowUpRight size={15} />
+            </a>
           </div>
-          {collection.data?.items.length ? (
-            <div className="mini-collection">
+          {session && collection.loading ? (
+            <Loading />
+          ) : session && collection.error ? (
+            <div className="desk-empty">
+              <h3>Your records couldn’t be loaded.</h3>
+              <p>
+                Try again to see your current collection. No records have been
+                changed.
+              </p>
+              <Button
+                variant="secondary"
+                icon={ArrowRight}
+                onClick={collection.reload}
+              >
+                Retry loading
+              </Button>
+            </div>
+          ) : collection.data?.items.length ? (
+            <div className="desk-records">
               {collection.data.items.slice(0, 4).map((c) => (
                 <a href={`/app/collection/${c.id}`} data-route key={c.id}>
-                  <div className="mini-coin">
+                  <span className="desk-record-photo">
                     {c.photos[0] ? (
-                      <img
-                        src={`/api/photos/${c.photos[0].id}`}
-                        alt="Your coin"
-                      />
+                      <img src={`/api/photos/${c.photos[0].id}`} alt="" />
                     ) : (
-                      <Coins size={25} />
+                      <Coins size={22} />
                     )}
-                  </div>
-                  <div>
+                  </span>
+                  <span>
                     <strong>{c.name}</strong>
-                    <span>
+                    <small>
                       {c.year || "Year not recorded"} · {c.condition}
-                    </span>
-                  </div>
-                  <span>×{c.quantity}</span>
-                  <ChevronRight size={16} />
+                    </small>
+                  </span>
+                  <span className="desk-record-quantity">×{c.quantity}</span>
+                  <ArrowUpRight size={16} />
                 </a>
               ))}
             </div>
           ) : (
-            <Empty
-              title={
-                session
-                  ? "Make room for your first coin."
-                  : "Build a collection worth knowing."
-              }
-              icon={Layers}
-              action={
+            <div className="desk-empty">
+              <div className="desk-empty-symbol">
+                <Layers size={28} strokeWidth={1.3} />
+              </div>
+              <span className="enterprise-kicker">
+                {session ? "YOUR REGISTER IS READY" : "PRIVATE BY DESIGN"}
+              </span>
+              <h3>
+                {session
+                  ? "Start with your first coin."
+                  : "A dedicated place for your collection."}
+              </h3>
+              <p>
+                Keep photographs, condition notes, purchase costs and provenance
+                in one private record.
+              </p>
+              {session ? (
                 <Button
-                  variant="secondary"
                   icon={Plus}
+                  variant="secondary"
                   onClick={() => openCoin()}
                 >
                   Add your first coin
                 </Button>
-              }
-            >
-              Keep photographs, acquisition details and provenance together. No
-              market value is assumed.
-            </Empty>
+              ) : (
+                <a
+                  href={readyToRegister ? "/register" : "/app/catalogue"}
+                  data-route
+                  className="button secondary"
+                >
+                  {readyToRegister
+                    ? "Create your workspace"
+                    : "Explore the public catalogue"}
+                  <ArrowUpRight size={16} />
+                </a>
+              )}
+              {!session && !readyToRegister && (
+                <small>
+                  New account registration is temporarily unavailable.
+                </small>
+              )}
+            </div>
           )}
         </section>
-        <aside className="field-note">
-          <div className="eyebrow">
-            <BookOpen size={14} /> THE COLLECTOR’S NOTEBOOK
+        <aside className="desk-status-panel panel">
+          <div className="panel-heading">
+            <div>
+              <span className="enterprise-kicker">RESEARCH READINESS</span>
+              <h2>Clear about what’s connected.</h2>
+            </div>
+            <ShieldCheck size={20} />
           </div>
-          <h3>
-            Before you polish
-            <br />
-            that old coin…
-          </h3>
-          <p>
-            Pause. Cleaning can permanently alter the surface and affect
-            collector interest. Photograph it as found and seek advice before
-            any treatment.
-          </p>
-          <button
-            className="text-link"
-            onClick={() => navigate("/app/research")}
-          >
-            A considered next step <ArrowRight size={16} />
-          </button>
-          <div className="notebook-line" />
-          <small>CARE & CONDITION / FIELD NOTE 01</small>
+          <dl>
+            {[
+              [
+                "AI photo observations",
+                caps.ai.available ? "Available" : "Not connected",
+                caps.ai.available
+                  ? "Consent required before analysis."
+                  : "Photographs can still be recorded manually.",
+              ],
+              [
+                "Catalogue review",
+                `${caps.catalogue.verified} verified`,
+                "Reference review status is shown per record.",
+              ],
+              [
+                "Comparable sales",
+                `${caps.market_evidence_count} records`,
+                caps.market_evidence_count
+                  ? "Estimates require matching reviewed evidence."
+                  : "Market estimates remain unavailable.",
+              ],
+              [
+                "Paid membership",
+                caps.billing.available ? "Available" : "Checkout disabled",
+                "Your collection costs are not a valuation.",
+              ],
+            ].map(([label, state, description]) => (
+              <div key={label}>
+                <dt>
+                  {label}
+                  <span>{state}</span>
+                </dt>
+                <dd>{description}</dd>
+              </div>
+            ))}
+          </dl>
+          <a href="/app/research" data-route className="desk-status-foot">
+            Research standards <ArrowUpRight size={15} />
+          </a>
         </aside>
       </div>
-      <div className="section-heading">
-        <div>
-          <div className="eyebrow">OUR NUMISMATIC HERITAGE</div>
-          <h2>Explore the South African story.</h2>
-        </div>
-        <a data-route href="/app/catalogue" className="text-link">
-          Browse catalogue <ArrowRight size={16} />
-        </a>
-      </div>
-      <div className="catalogue-preview">
-        {catalogue.data?.items.slice(0, 3).map((c) => (
-          <a href={`/app/catalogue/${c.id}`} data-route key={c.id}>
-            <div className="preview-art">
-              <CoinArt kind={c.image} />
-              <small>ILLUSTRATION</small>
-            </div>
-            <div>
-              <Tag>{c.era}</Tag>
-              <h3>{c.name}</h3>
-              <p>
-                {c.start_year}
-                {c.end_year && c.end_year !== c.start_year
-                  ? `–${c.end_year}`
-                  : !c.end_year
-                    ? " onward"
-                    : ""}{" "}
-                <ArrowUpRight size={17} />
-              </p>
-            </div>
+      <section className="desk-resources">
+        <div className="desk-section-title">
+          <div>
+            <span className="enterprise-kicker">CONTINUE YOUR RESEARCH</span>
+            <h2>A little context goes a long way.</h2>
+          </div>
+          <a href="/app/catalogue" data-route className="text-link">
+            Browse catalogue <ArrowUpRight size={16} />
           </a>
-        ))}
-      </div>
-      <div className="evidence-bar">
+        </div>
+        <div className="desk-resource-grid">
+          {catalogue.loading ? (
+            <Loading />
+          ) : catalogue.error ? (
+            <Notice tone="error">{catalogue.error}</Notice>
+          ) : (
+            catalogue.data?.items.slice(0, 3).map((c, i) => (
+              <a href={`/app/catalogue/${c.id}`} data-route key={c.id}>
+                <div>
+                  <span>
+                    0{i + 1} / {c.era.toUpperCase()}
+                  </span>
+                  <ArrowUpRight size={17} />
+                </div>
+                <h3>{c.name}</h3>
+                <p>
+                  {c.start_year}
+                  {c.end_year && c.end_year !== c.start_year
+                    ? `–${c.end_year}`
+                    : !c.end_year
+                      ? " onward"
+                      : ""}{" "}
+                  · {c.denomination}
+                </p>
+                <small>
+                  {c.verification === "verified"
+                    ? "Source verification complete"
+                    : "Source verification pending"}
+                </small>
+              </a>
+            ))
+          )}
+        </div>
+      </section>
+      <div className="desk-care-note">
         <ShieldCheck size={20} />
-        <span>
-          <strong>Knowledge before value.</strong> Catalogue starters await
-          source review. No verified sale dataset is connected, so no collector
-          prices are invented.
-        </span>
-        <a data-route href="/app/research">
-          Our approach <ArrowUpRight size={15} />
+        <div>
+          <strong>Preserve the surface. Preserve the evidence.</strong>
+          <p>
+            Photograph a coin as found. Cleaning can permanently alter the
+            surface; seek professional advice before treatment.
+          </p>
+        </div>
+        <a href="/app/research" data-route aria-label="Read coin care research">
+          <ArrowUpRight size={18} />
         </a>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -1433,7 +1549,8 @@ export function SettingsPage({
 export function Recovery({ mode, setSession, navigate, notify, caps }) {
   const [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
-    [message, setMessage] = useState("");
+    [message, setMessage] = useState(""),
+    [show, setShow] = useState(false);
   const raw = new URLSearchParams(window.location.search).get("token");
   const verify = mode === "verify-email",
     reset = mode === "reset-password";
@@ -1477,34 +1594,44 @@ export function Recovery({ mode, setSession, navigate, notify, caps }) {
     }
   }
   return (
-    <div className="auth-page">
-      <a href="/" data-route>
-        <Brand />
-      </a>
-      <main id="main" className="auth-card">
-        <div className="eyebrow">ACCOUNT SECURITY</div>
-        <h1>
-          {verify
-            ? "Verify your email."
+    <AuthLayout mode={mode}>
+      <div className="auth-form-topline">
+        <ShieldCheck size={15} />
+        <span>ACCOUNT RECOVERY</span>
+        <span>24 / ATLAS</span>
+      </div>
+      <div className="eyebrow">ACCOUNT SECURITY</div>
+      <h1>
+        {verify
+          ? "Verify your email."
+          : reset
+            ? "Reset your password."
+            : "Forgot your password?"}
+      </h1>
+      <p>
+        {verify && raw
+          ? "Confirm this address to finish setting up your account."
+          : verify
+            ? "Request a new one-use verification link."
             : reset
-              ? "A fresh start."
-              : "Forgot your password?"}
-        </h1>
-        <p>
-          {verify && raw
-            ? "Confirm this address to finish setting up your account."
-            : verify
-              ? "Request a new one-use verification link."
-              : reset
-                ? "Choose a new passphrase of at least 12 characters."
-                : "Request a secure, one-use recovery link."}
-        </p>
-        {!caps.auth.email_available && !raw && (
-          <Notice>
-            Email delivery is not connected yet. Recovery links cannot be sent
-            until the operator configures a verified sender.
-          </Notice>
-        )}
+              ? "Choose a new passphrase of at least 12 characters."
+              : "Request a secure, one-use recovery link."}
+      </p>
+      {!caps.auth.email_available && !raw && (
+        <Notice>
+          Email delivery is not connected yet. Recovery links cannot be sent
+          until the operator configures a verified sender.
+        </Notice>
+      )}
+      {reset && !raw ? (
+        <Notice>
+          Open the password-reset link from your email. If you need a new link,{" "}
+          <a href="/forgot-password" data-route>
+            request password recovery
+          </a>
+          .
+        </Notice>
+      ) : (
         <form onSubmit={submit}>
           {!raw || (!verify && !reset) ? (
             <Field
@@ -1515,15 +1642,33 @@ export function Recovery({ mode, setSession, navigate, notify, caps }) {
               required
             />
           ) : reset ? (
-            <Field
-              label="New password"
-              name="password"
-              type="password"
-              minLength={12}
-              maxLength={128}
-              autoComplete="new-password"
-              required
-            />
+            <label className="field" htmlFor="recovery-password">
+              <span>New password</span>
+              <div className="password-input">
+                <input
+                  id="recovery-password"
+                  aria-label="New password"
+                  aria-describedby="recovery-password-help"
+                  name="password"
+                  type={show ? "text" : "password"}
+                  minLength={12}
+                  maxLength={128}
+                  autoComplete="new-password"
+                  required
+                />
+                <button
+                  type="button"
+                  aria-label={show ? "Hide password" : "Show password"}
+                  aria-pressed={show}
+                  onClick={() => setShow(!show)}
+                >
+                  {show ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
+              <small id="recovery-password-help">
+                Use at least 12 characters. A unique passphrase works well.
+              </small>
+            </label>
           ) : null}
           {error && <Notice tone="error">{error}</Notice>}
           {message && <Notice>{message}</Notice>}
@@ -1537,10 +1682,17 @@ export function Recovery({ mode, setSession, navigate, notify, caps }) {
                   : "Request secure link"}
           </Button>
         </form>
-        <a href="/login" data-route className="back-link">
-          Back to sign in
-        </a>
-      </main>
-    </div>
+      )}
+      <a href="/login" data-route className="back-link">
+        Back to sign in
+      </a>
+      <div className="auth-privacy">
+        <LockKeyhole size={14} />
+        <span>
+          Recovery and verification links are one-use and expire automatically.
+          Never share your password or recovery link.
+        </span>
+      </div>
+    </AuthLayout>
   );
 }

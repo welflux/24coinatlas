@@ -36,6 +36,7 @@ import {
 } from "./workspace";
 import "./style.css";
 import "./landing.css";
+import "./workspace-brand.css";
 function App() {
   const [location, setLocation] = useState(
       window.location.pathname + window.location.search,
@@ -89,8 +90,29 @@ function App() {
     return () => clearTimeout(timer);
   }, [toast]);
   useEffect(() => {
-    document.title = `${location === "/" ? "South African coin intelligence" : location.split("/")[2]?.replaceAll("-", " ") || "Workspace"} | 24CoinAtlas`;
+    const route = location.split("?")[0];
+    const accountTitles = {
+      "/": "South African coin intelligence",
+      "/login": "Sign in",
+      "/register": "Create account",
+      "/forgot-password": "Account recovery",
+      "/reset-password": "Reset password",
+      "/verify-email": "Verify email",
+      "/app": "Overview",
+    };
+    document.title = `${accountTitles[route] || route.split("/")[2]?.replaceAll("-", " ") || "Workspace"} | 24CoinAtlas`;
   }, [location]);
+  useEffect(() => {
+    if (!mobile) return;
+    const closeNavigation = (event) => {
+      if (event.key === "Escape") {
+        setMobile(false);
+        document.querySelector(".mobile-menu")?.focus();
+      }
+    };
+    window.addEventListener("keydown", closeNavigation);
+    return () => window.removeEventListener("keydown", closeNavigation);
+  }, [mobile]);
   const context = {
     navigate,
     session,
@@ -100,7 +122,12 @@ function App() {
     revision,
     refresh: () => setRevision((r) => r + 1),
     openCoin: (initial = {}) => {
-      if (!session) return navigate("/register");
+      if (!session)
+        return navigate(
+          caps?.auth?.verification_required && !caps?.auth?.email_available
+            ? "/login"
+            : "/register",
+        );
       setCoinForm(initial);
     },
   };
@@ -167,7 +194,7 @@ function App() {
       "/app/identify": "Identification",
       "/app/catalogue": "South African catalogue",
       "/app/collection": "My collection",
-      "/app/research": "Rarity & research",
+      "/app/research": "Research & evidence",
       "/app/billing": "Membership",
       "/app/settings": "Account & settings",
     };
@@ -195,7 +222,10 @@ function App() {
       );
     screen = (
       <div className="workspace">
-        <aside className={`sidebar ${mobile ? "open" : ""}`}>
+        <aside
+          id="workspace-navigation"
+          className={`sidebar ${mobile ? "open" : ""}`}
+        >
           <a href="/" data-route>
             <Brand light />
           </a>
@@ -206,19 +236,24 @@ function App() {
           >
             <X size={22} />
           </button>
-          <div className="sidebar-section-label">YOUR WORKSPACE</div>
+          <div className="sidebar-section-label">COLLECTOR WORKSPACE</div>
           <nav aria-label="Workspace">
             {[
               ["/app", LayoutDashboard, "Overview"],
               ["/app/identify", ScanLine, "Identify a coin"],
               ["/app/catalogue", BookOpen, "SA catalogue"],
               ["/app/collection", Layers, "My collection"],
-              ["/app/research", Gem, "Rarity & research"],
+              ["/app/research", Gem, "Research & evidence"],
             ].map(([href, Icon, label]) => (
               <a
                 data-route
                 href={href}
                 key={href}
+                aria-current={
+                  (href === "/app" ? path === href : path.startsWith(href))
+                    ? "page"
+                    : undefined
+                }
                 className={
                   (href === "/app" ? path === href : path.startsWith(href))
                     ? "active"
@@ -235,8 +270,8 @@ function App() {
           </nav>
           <div className="sidebar-note">
             <span>✧</span>
-            <h4>Every coin has a story.</h4>
-            <p>Give yours a place to belong.</p>
+            <h4>Evidence before estimates.</h4>
+            <p>Document the detail. Keep the context.</p>
           </div>
           <div className="sidebar-bottom">
             <a data-route href="/app/billing" className="pro-link">
@@ -277,6 +312,8 @@ function App() {
               <button
                 className="mobile-menu icon-button"
                 aria-label="Open navigation"
+                aria-expanded={mobile}
+                aria-controls="workspace-navigation"
                 onClick={() => setMobile(true)}
               >
                 <Menu />
