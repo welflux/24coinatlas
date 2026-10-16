@@ -1741,3 +1741,23 @@
     min-height: 47px;
   }
 }
+
+/* Readability adjustment requested for the footer only. */
+.reference-landing .atlas-footer nav,
+.reference-landing .atlas-footer .atlas-backtop {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.reference-landing .atlas-footer-bottom {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.reference-landing .atlas-footer nav {
+  flex-wrap: wrap;
+  row-gap: 12px;
+}
+@media (max-width: 760px) {
+  .reference-landing .atlas-footer nav {
+    gap: 12px 20px;
+  }
+}

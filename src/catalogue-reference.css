@@ -601,3 +601,45 @@
     margin-top: 20px;
   }
 }
+
+/* Larger navigation and footer labels without changing catalogue content. */
+.reference-workspace.workspace .sidebar nav a,
+.reference-workspace.workspace .sidebar-bottom > a,
+.reference-workspace.workspace .sidebar-bottom > button {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.reference-workspace.workspace .sidebar-note .pro-link {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.reference-workspace.workspace .nav-new {
+  font-size: 9px;
+}
+.reference-workspace.workspace .breadcrumb,
+.reference-workspace.workspace .sign-in-link {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.reference-workspace.workspace .live-label {
+  font-size: 10px;
+}
+.research-footer-top a,
+.research-footer-top button {
+  font-size: 14px;
+  line-height: 1.5;
+}
+.research-footer-top nav {
+  flex-wrap: wrap;
+  row-gap: 12px;
+}
+.research-footer-bottom {
+  font-size: 12px;
+  line-height: 1.6;
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .reference-workspace.workspace .breadcrumb {
+    font-size: 12px;
+  }
+}
