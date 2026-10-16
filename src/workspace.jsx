@@ -40,7 +40,10 @@ export { Collection, CollectionDetail, CoinForm } from "./collection";
 
 export function Catalogue() {
   const [query, setQuery] = useState(""),
-    [era, setEra] = useState("All eras"),
+    [era, setEra] = useState(() => {
+      const requested = new URLSearchParams(window.location.search).get("era");
+      return eras.includes(requested) ? requested : "All eras";
+    }),
     r = useResource(
       `/catalogue?q=${encodeURIComponent(query)}${era === "All eras" ? "" : `&era=${encodeURIComponent(era)}`}`,
     );

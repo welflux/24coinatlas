@@ -35,6 +35,7 @@ import {
   Identify,
 } from "./workspace";
 import "./style.css";
+import "./landing.css";
 function App() {
   const [location, setLocation] = useState(
       window.location.pathname + window.location.search,

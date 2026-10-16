@@ -92,6 +92,41 @@ try {
       `PASS ${width}px: landing, workspace, catalogue, research, plans and registration layouts`,
     );
   }
+  // The public landing must remain useful while production email is unavailable.
+  config.requireVerifiedEmail = true;
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto(origin + "/", { waitUntil: "networkidle" });
+  assert.equal(await page.locator('a[href="/register"]').count(), 0);
+  await page.getByRole("button", { name: "Open menu", exact: true }).click();
+  await page.keyboard.press("Escape");
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Open menu", exact: true })
+      .getAttribute("aria-expanded"),
+    "false",
+  );
+  await page.locator("summary").first().focus();
+  await page.keyboard.press("Enter");
+  assert.equal(
+    await page
+      .locator("details")
+      .first()
+      .evaluate((el) => el.open),
+    true,
+  );
+  await page.locator(".atlas-era").first().click();
+  assert.equal(
+    await page.getByLabel("Filter by era").inputValue(),
+    "ZAR & historical",
+  );
+  await page
+    .getByRole("link", { name: /ZAR gold pond/i })
+    .first()
+    .waitFor();
+  config.requireVerifiedEmail = false;
+  console.log(
+    "PASS public catalogue funnel without registration, era filters, keyboard FAQ and menu Escape",
+  );
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(origin + "/register");
   await page.getByLabel("Your name", { exact: true }).fill("Browser Collector");
