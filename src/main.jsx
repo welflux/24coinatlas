@@ -37,6 +37,7 @@ import {
 import "./style.css";
 import "./landing.css";
 import "./workspace-brand.css";
+import "./brand.css";
 function App() {
   const [location, setLocation] = useState(
       window.location.pathname + window.location.search,
@@ -269,7 +270,13 @@ function App() {
             ))}
           </nav>
           <div className="sidebar-note">
-            <span>✧</span>
+            <img
+              src="/brand/24coinatlas-mark.png"
+              width="32"
+              height="32"
+              alt=""
+              className="sidebar-brand-mark"
+            />
             <h4>Evidence before estimates.</h4>
             <p>Document the detail. Keep the context.</p>
           </div>

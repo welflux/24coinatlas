@@ -540,7 +540,7 @@ export function createApplication(overrides = {}, services = {}) {
           kind === "verify_email"
             ? "Verify your 24CoinAtlas email"
             : "Reset your 24CoinAtlas password",
-        html: `<p>${kind === "verify_email" ? "Confirm this email address to start your private collection." : "You requested a password reset. If this was not you, ignore this message."}</p><p><a href="${link}">${kind === "verify_email" ? "Verify email" : "Reset password"}</a></p><p>This one-use link expires in ${kind === "verify_email" ? "24 hours" : "one hour"}.</p>`,
+        html: `<div style="background:#fffefb;padding:16px 20px;border-bottom:1px solid #dfe3e4;margin-bottom:24px"><img src="${config.origin}/brand/24coinatlas-logo.png" alt="24CoinAtlas" width="240" height="80" style="display:block;max-width:100%;height:auto"></div><p>${kind === "verify_email" ? "Confirm this email address to start your private collection." : "You requested a password reset. If this was not you, ignore this message."}</p><p><a href="${link}">${kind === "verify_email" ? "Verify email" : "Reset password"}</a></p><p>This one-use link expires in ${kind === "verify_email" ? "24 hours" : "one hour"}.</p>`,
       });
     } catch {
       db.prepare("DELETE FROM account_tokens WHERE token_hash=?").run(

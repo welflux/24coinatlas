@@ -1,0 +1,101 @@
+/* The approved artwork is shared across every logo placement. */
+.brand.brand-logo {
+  display: inline-flex;
+  width: 224px;
+  max-width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  line-height: 0;
+  letter-spacing: 0;
+  vertical-align: middle;
+}
+.brand-logo .brand-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 1;
+  object-fit: contain;
+}
+.workspace .sidebar .brand.brand-logo {
+  width: 190px;
+  background: #fffefb;
+  border: 1px solid #d9c8a4;
+  border-radius: 3px;
+  padding: 1px 3px;
+}
+.workspace .sidebar > a:first-child {
+  margin-inline: 0;
+}
+.atlas-home .atlas-footer .brand.brand-logo {
+  width: 224px;
+}
+.enterprise-auth-nav .brand.brand-logo {
+  width: 236px;
+}
+.boot .brand.brand-logo {
+  width: min(280px, calc(100vw - 48px));
+}
+.workspace .sidebar-note .sidebar-brand-mark {
+  display: block;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+.auth-plate-art .auth-approved-mark {
+  display: block;
+  width: 112px;
+  height: 112px;
+  object-fit: contain;
+}
+@media (max-width: 1200px) {
+  .workspace .sidebar .brand.brand-logo {
+    width: 180px;
+  }
+}
+@media (max-width: 1000px) {
+  .workspace .sidebar .brand.brand-logo {
+    width: 175px;
+  }
+  .auth-plate-art .auth-approved-mark {
+    width: 90px;
+    height: 90px;
+  }
+}
+@media (max-width: 800px) {
+  .atlas-home .brand.brand-logo {
+    width: 210px;
+  }
+}
+@media (max-width: 760px) {
+  .workspace .sidebar .brand.brand-logo {
+    width: 195px;
+  }
+  .enterprise-auth-nav .brand.brand-logo {
+    width: 210px;
+  }
+}
+@media (max-width: 580px) {
+  .atlas-home .atlas-nav .brand.brand-logo {
+    width: 180px;
+  }
+  .atlas-home .atlas-footer .brand.brand-logo {
+    width: 210px;
+  }
+}
+@media (max-width: 500px) {
+  .enterprise-auth-nav .brand.brand-logo {
+    width: 180px;
+  }
+}
+@media (max-width: 360px) {
+  .atlas-home .atlas-nav .brand.brand-logo {
+    width: 165px;
+  }
+  .enterprise-auth-nav .brand.brand-logo {
+    width: 160px;
+  }
+}

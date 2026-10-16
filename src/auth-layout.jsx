@@ -54,10 +54,13 @@ export function AuthLayout({ mode, children }) {
               <span>ZA</span>
             </div>
             <div className="auth-plate-art">
-              <div className="auth-plate-rings">
-                <span>24</span>
-                <small>COIN ATLAS</small>
-              </div>
+              <img
+                src="/brand/24coinatlas-mark.png"
+                width="112"
+                height="112"
+                alt=""
+                className="auth-approved-mark"
+              />
               <span>
                 IDENTITY
                 <br /> CONDITION

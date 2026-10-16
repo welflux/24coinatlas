@@ -74,15 +74,19 @@ export function useResource(path, dependency = 0) {
 }
 export function Brand({ light = false }) {
   return (
-    <span className={`brand ${light ? "brand-light" : ""}`}>
-      <span className="brand-symbol">✧</span>
-      <span>
-        24Coin<span className="brand-atlas">Atlas</span>
-        <small>SOUTH AFRICAN COIN INTELLIGENCE</small>
-      </span>
+    <span className={`brand brand-logo ${light ? "brand-light" : ""}`}>
+      <img
+        src="/brand/24coinatlas-logo.png"
+        alt="24CoinAtlas"
+        width="2172"
+        height="724"
+        decoding="async"
+        className="brand-image"
+      />
     </span>
   );
 }
+
 export function Button({
   children,
   icon: Icon = ArrowUpRight,

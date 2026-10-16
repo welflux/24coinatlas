@@ -19,3 +19,9 @@ The application shell shares the midnight, ivory and brass palette and preferred
 The identification workbench separates capture, provider analysis and human review. Public visitors can inspect the workflow, but photograph controls require a session. Provider-unavailable and permission states are visible before attempting analysis. Existing photo ownership, consent, upload validation, quotas and assessment endpoints are preserved.
 
 Registration, sign-in, recovery, reset and verification share `AuthLayout`, a two-panel card with a brand/research panel and a focused form. On narrow screens the decorative plate and assurance list collapse away. This is a normal navigable page, not an ARIA modal dialog; it does not trap users in a fake modal. Password managers, autocomplete, reveal controls, validation and verification requirements remain supported. Registration is disabled with a catalogue link when the capabilities endpoint says verification delivery is unavailable. No authentication bypass, sample login or billing activation is included.
+
+## Approved logo
+
+The approved gold globe and gold/navy `24coinatlas` wordmark replaces the earlier star symbol. Canonical transparent PNG assets live in `public/brand/`; `Brand` in `src/ui.jsx` renders the wordmark across public pages, workspace navigation, loading/error screens and all account-access pages. `src/brand.css` controls responsive sizing. The dark sidebar places the original coloured wordmark on an ivory panel for legibility. The globe is used for the favicon, touch icon, sidebar note and account illustration.
+
+Verification/recovery email templates use the hosted logo with a text alternative. Downloaded HTML dossiers and collection reports embed the logo, so it remains visible offline. These are PNG assets, not editable vector artwork or font files. The source ZIP includes both images.
